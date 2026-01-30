@@ -500,6 +500,34 @@ header.scrolled {
 @media (max-width: 600px) { ... }
 */
 
+/* Game Marquee (Horizontal Scroll) */
+.game-marquee-wrapper {
+    width: 100%;
+    overflow: hidden;
+    padding: 40px 0;
+    position: relative;
+}
+
+.game-marquee-content {
+    display: inline-flex;
+    gap: 30px;
+    animation: scroll-games 40s linear infinite;
+}
+
+.game-marquee-content:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scroll-games {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
 /* Bookshelf Grid (Restored) */
 .bookshelf-grid {
     display: grid;
@@ -510,8 +538,10 @@ header.scrolled {
 }
 
 .game-item {
+    flex-shrink: 0;
+    width: 220px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;

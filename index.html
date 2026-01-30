@@ -158,54 +158,92 @@
                 <h2 class="section-title">GAMES<span class="jp-title">遊べるゲーム</span></h2>
                 <p class="section-desc">本棚から好きな本を選ぶように、<br>気になるゲームを見つけてください。</p>
 
-                <div class="bookshelf-grid" id="game-library-grid" style="min-height: 200px;">
-                    <!-- Static Fallback Content (Catan) -->
-                    <div class="game-item">
-                        <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"></div>
-                        <div class="game-tags"><span>#初心者歓迎</span><span>#60分〜</span></div>
-                        <div class="game-title-overlay">Catan</div>
-                    </div>
-                    <!-- Static Fallback Content (Dominion) -->
-                    <div class="game-item">
-                        <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion"></div>
-                        <div class="game-tags"><span>#戦略</span><span>#30分〜</span></div>
-                        <div class="game-title-overlay">Dominion</div>
-                    </div>
-                    <!-- Static Fallback Content (Blokus) -->
-                    <div class="game-item">
-                        <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"></div>
-                        <div class="game-tags"><span>#パズル</span><span>#20分〜</span></div>
-                        <div class="game-title-overlay">Blokus</div>
-                    </div>
-                    <!-- Static Fallback Content (Geister) -->
-                    <div class="game-item">
-                        <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"></div>
-                        <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
-                        <div class="game-title-overlay">Geister</div>
-                    </div>
-                    <!-- Static Fallback Content (Ito) -->
-                    <div class="game-item">
-                        <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"></div>
-                        <div class="game-tags"><span>#盛り上がる</span><span>#20分〜</span></div>
-                        <div class="game-title-overlay">Ito</div>
-                    </div>
-                    <!-- Static Fallback Content (Splendor) -->
-                    <div class="game-item">
-                        <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"></div>
-                        <div class="game-tags"><span>#買い物</span><span>#30分〜</span></div>
-                        <div class="game-title-overlay">Splendor</div>
-                    </div>
-                    <!-- Static Fallback Content (Dixit) -->
-                    <div class="game-item">
-                        <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"></div>
-                        <div class="game-tags"><span>#想像力</span><span>#30分〜</span></div>
-                        <div class="game-title-overlay">Dixit</div>
-                    </div>
-                    <!-- Static Fallback Content (Skull) -->
-                    <div class="game-item">
-                        <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"></div>
-                        <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
-                        <div class="game-title-overlay">Skull</div>
+                <div class="game-marquee-wrapper">
+                    <div class="game-marquee-content">
+                        <!-- Set 1 -->
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"></div>
+                            <div class="game-tags"><span>#初心者歓迎</span><span>#60分〜</span></div>
+                            <div class="game-title-overlay">Catan</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion">
+                            </div>
+                            <div class="game-tags"><span>#戦略</span><span>#30分〜</span></div>
+                            <div class="game-title-overlay">Dominion</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"></div>
+                            <div class="game-tags"><span>#パズル</span><span>#20分〜</span></div>
+                            <div class="game-title-overlay">Blokus</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"></div>
+                            <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
+                            <div class="game-title-overlay">Geister</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"></div>
+                            <div class="game-tags"><span>#盛り上がる</span><span>#20分〜</span></div>
+                            <div class="game-title-overlay">Ito</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"></div>
+                            <div class="game-tags"><span>#買い物</span><span>#30分〜</span></div>
+                            <div class="game-title-overlay">Splendor</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"></div>
+                            <div class="game-tags"><span>#想像力</span><span>#30分〜</span></div>
+                            <div class="game-title-overlay">Dixit</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"></div>
+                            <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
+                            <div class="game-title-overlay">Skull</div>
+                        </div>
+                        <!-- Set 2 (Duplicate for seamless loop) -->
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"></div>
+                            <div class="game-tags"><span>#初心者歓迎</span><span>#60分〜</span></div>
+                            <div class="game-title-overlay">Catan</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion">
+                            </div>
+                            <div class="game-tags"><span>#戦略</span><span>#30分〜</span></div>
+                            <div class="game-title-overlay">Dominion</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"></div>
+                            <div class="game-tags"><span>#パズル</span><span>#20分〜</span></div>
+                            <div class="game-title-overlay">Blokus</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"></div>
+                            <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
+                            <div class="game-title-overlay">Geister</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"></div>
+                            <div class="game-tags"><span>#盛り上がる</span><span>#20分〜</span></div>
+                            <div class="game-title-overlay">Ito</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"></div>
+                            <div class="game-tags"><span>#買い物</span><span>#30分〜</span></div>
+                            <div class="game-title-overlay">Splendor</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"></div>
+                            <div class="game-tags"><span>#想像力</span><span>#30分〜</span></div>
+                            <div class="game-title-overlay">Dixit</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"></div>
+                            <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
+                            <div class="game-title-overlay">Skull</div>
+                        </div>
                     </div>
                 </div>
 

@@ -22,7 +22,7 @@ const init = () => {
                 });
             }
 
-            // SAFETY: Force hide after 1.5 seconds (ultra short)
+            // SAFETY: Force hide after 4 seconds
             setTimeout(() => {
                 if (openingOverlay.style.display !== 'none') {
                     openingOverlay.classList.add('fade-out');
@@ -32,7 +32,7 @@ const init = () => {
                         document.documentElement.style.overflow = ''; // Unlock html too
                     }, 500);
                 }
-            }, 1500);
+            }, 4000);
 
             let fadeStarted = false;
 
@@ -41,8 +41,8 @@ const init = () => {
             document.documentElement.style.overflow = 'hidden';
 
             openingVideo.addEventListener('timeupdate', () => {
-                // Start fade out at 1.0s mark
-                if (!fadeStarted && (openingVideo.currentTime >= 1.0 || (openingVideo.duration > 0 && openingVideo.duration - openingVideo.currentTime <= 0.5))) {
+                // Start fade out at 3.5s mark
+                if (!fadeStarted && (openingVideo.currentTime >= 3.5 || (openingVideo.duration > 0 && openingVideo.duration - openingVideo.currentTime <= 0.5))) {
                     fadeStarted = true;
                     openingOverlay.classList.add('fade-out');
                 }
