@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ふらっとスペース | 川崎のボードゲーム＆ポーカーカフェ</title>
+    <meta name="description" content="川崎駅すぐ！初心者大歓迎のボードゲーム＆ポーカーカフェ「ふらっとスペース」。明るく楽しい空間で一緒に遊びませんか？">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <!-- Opening Video Overlay -->
+    <div id="opening-overlay">
+        <video id="opening-video" muted playsinline autoplay>
+            <source src="assets/video/opening.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="logo-container">
+            <a href="#">
+                <img src="assets/images/logo.png" alt="ふらっとスペース Logo" class="logo-img">
+            </a>
+        </div>
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="#gallery">GALLERY</a></li>
+                <li><a href="#price">PRICE</a></li>
+                <li><a href="#games">GAMES</a></li>
+                <li><a href="#access">ACCESS</a></li>
+            </ul>
+        </nav>
+        <button id="menu-toggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu">
+        <nav>
+            <ul>
+                <li><a href="#gallery">GALLERY</a></li>
+                <li><a href="#price">PRICE</a></li>
+                <li><a href="#games">GAMES</a></li>
+                <li><a href="#access">ACCESS</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="hero-bg-single"></div>
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <h1 class="main-copy">ふらっと<br>あそぼ</h1>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <span>SCROLL</span>
+                <div class="arrow"></div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="section">
+            <div class="container-fluid" style="padding: 0;">
+                <h2 class="section-title">GALLERY<span class="jp-title">店内の様子</span></h2>
+                <p class="section-desc">白を基調とした明るく開放的な空間。<br>広々としたテーブルで、ゆったりとボードゲームを楽しめます。</p>
+                <div class="gallery-wrapper">
+                    <div class="marquee-wrapper">
+                        <div class="marquee-content">
+                            <!-- Set 1 -->
+                            <div class="gallery-item"><img src="assets/images/gallery_01.jpg" alt="Interior View 1">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_02.jpg" alt="Interior View 2">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_03.jpg" alt="Interior View 3">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_04.jpg" alt="Interior View 4">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_05.jpg" alt="Interior View 5">
+                            </div>
+                            <!-- Set 2 (Duplicate for Loop) -->
+                            <div class="gallery-item"><img src="assets/images/gallery_01.jpg" alt="Interior View 1">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_02.jpg" alt="Interior View 2">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_03.jpg" alt="Interior View 3">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_04.jpg" alt="Interior View 4">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_05.jpg" alt="Interior View 5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Price Section -->
+        <section id="price" class="section">
+            <div class="container">
+                <h2 class="section-title">PRICE<span class="jp-title">料金プラン</span></h2>
+                <p class="section-desc">別途、入場料 500円 がかかります。<br>（貸切プランを除く）</p>
+                <div class="cards-grid">
+                    <!-- Board Game Plan -->
+                    <div class="card price-card glass-card featured" data-plan="boardgame" data-rate="80">
+                        <div class="badge">人気No.1</div>
+                        <div class="card-icon"><i class="fa-solid fa-dice"></i></div>
+                        <h3>ボードゲーム<br>プラン</h3>
+                        <div class="price">
+                            <span class="amount">80</span><span class="unit">円 / 10分</span>
+                        </div>
+                        <p class="note">click to simulate</p>
+                    </div>
+                    <!-- Poker Plan -->
+                    <div class="card price-card glass-card" data-plan="poker" data-rate="100">
+                        <div class="card-icon"><i class="fa-solid fa-diamond"></i></div>
+                        <h3>ポーカー<br>プラン</h3>
+                        <div class="price">
+                            <span class="amount">100</span><span class="unit">円 / 10分</span>
+                        </div>
+                        <p class="note">click to simulate</p>
+                    </div>
+                    <!-- Charter Plan -->
+                    <div class="card price-card glass-card">
+                        <div class="card-icon"><i class="fa-solid fa-chess-rook"></i></div>
+                        <h3>貸切<br>プラン</h3>
+                        <div class="price">
+                            <span class="amount">19,800</span><span class="unit">円 / 1時間</span>
+                        </div>
+                        <p class="note">※5時間〜承ります</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Library Section -->
+        <section id="games" class="section">
+            <div class="container-fluid" style="padding: 0;">
+                <h2 class="section-title">GAMES<span class="jp-title">遊べるゲーム</span></h2>
+                <p class="section-desc">本棚から好きな本を選ぶように、<br>気になるゲームを見つけてください。</p>
+
+                <div class="bookshelf-grid" id="game-library-grid" style="min-height: 200px;">
+                    <!-- Static Fallback Content (Catan) -->
+                    <div class="game-item">
+                        <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"></div>
+                        <div class="game-tags"><span>#初心者歓迎</span><span>#60分〜</span></div>
+                        <div class="game-title-overlay">Catan</div>
+                    </div>
+                    <!-- Static Fallback Content (Dominion) -->
+                    <div class="game-item">
+                        <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion"></div>
+                        <div class="game-tags"><span>#戦略</span><span>#30分〜</span></div>
+                        <div class="game-title-overlay">Dominion</div>
+                    </div>
+                    <!-- Static Fallback Content (Blokus) -->
+                    <div class="game-item">
+                        <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"></div>
+                        <div class="game-tags"><span>#パズル</span><span>#20分〜</span></div>
+                        <div class="game-title-overlay">Blokus</div>
+                    </div>
+                    <!-- Static Fallback Content (Geister) -->
+                    <div class="game-item">
+                        <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"></div>
+                        <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
+                        <div class="game-title-overlay">Geister</div>
+                    </div>
+                    <!-- Static Fallback Content (Ito) -->
+                    <div class="game-item">
+                        <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"></div>
+                        <div class="game-tags"><span>#盛り上がる</span><span>#20分〜</span></div>
+                        <div class="game-title-overlay">Ito</div>
+                    </div>
+                    <!-- Static Fallback Content (Splendor) -->
+                    <div class="game-item">
+                        <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"></div>
+                        <div class="game-tags"><span>#買い物</span><span>#30分〜</span></div>
+                        <div class="game-title-overlay">Splendor</div>
+                    </div>
+                    <!-- Static Fallback Content (Dixit) -->
+                    <div class="game-item">
+                        <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"></div>
+                        <div class="game-tags"><span>#想像力</span><span>#30分〜</span></div>
+                        <div class="game-title-overlay">Dixit</div>
+                    </div>
+                    <!-- Static Fallback Content (Skull) -->
+                    <div class="game-item">
+                        <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"></div>
+                        <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
+                        <div class="game-title-overlay">Skull</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="./games.html" class="btn-nav" style="padding: 15px 60px;">もっと見る</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Access Section -->
+        <section id="access" class="section">
+            <div class="container">
+                <h2 class="section-title">ACCESS<span class="jp-title">アクセス</span></h2>
+                <div class="access-content">
+                    <div class="access-info glass-card">
+                        <p class="address-text">
+                            <strong>ふらっとスペース</strong><br>
+                            〒210-0006<br>
+                            神奈川県川崎市川崎区砂子1丁目8-2 4階
+                        </p>
+                        <div class="entrance-placeholder">
+                            <i class="fa-regular fa-image"></i>
+                            <span>入り口はこちら（写真）</span>
+                        </div>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=神奈川県川崎市川崎区砂子1丁目8-2" target="_blank"
+                            class="btn-nav">
+                            <i class="fa-solid fa-location-arrow"></i> Googleマップでナビを開始
+                        </a>
+                    </div>
+                    <div class="map-container glass-card">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3248.877868779532!2d139.70014027627447!3d35.53255147263503!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186090a9a9a9a9%3A0x1!2z56We5aWI5bed55yM5bed5bSO5biC5bed5bSO5Yy656CC5a2Q77yR5LiB55uu77yY4oiS77yS!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp"
+                            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <img src="assets/images/logo.png" alt="Flat Space">
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-btn">Twitter</a>
+                <a href="#" class="social-btn">Instagram</a>
+            </div>
+            <p class="copyright">&copy; 2024 Flat Space. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Game Detail Modal -->
+    <div id="game-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-img-container">
+                    <img id="modal-img" src="" alt="Game Image">
+                </div>
+                <div class="modal-text">
+                    <h3 id="modal-title">Title</h3>
+                    <p id="modal-desc">Game description goes here...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Modal -->
+    <div id="calc-modal" class="modal">
+        <div class="modal-content calc-content">
+            <span class="close-modal close-calc">&times;</span>
+            <div class="calc-body">
+                <h3>料金シミュレーション</h3>
+                <div class="calc-plan-display">
+                    プラン: <span id="calc-plan-name">ボードゲーム</span>
+                </div>
+
+                <div class="calc-input-group">
+                    <label>利用時間</label>
+                    <div class="time-input-container">
+                        <input type="number" id="calc-hours" min="0" value="1">
+                        <span>時間</span>
+                        <input type="number" id="calc-minutes" min="0" max="50" step="10" value="0">
+                        <span>分</span>
+                    </div>
+                </div>
+
+                <div class="calc-result">
+                    <div class="calc-row">
+                        <span>入場料</span>
+                        <span>¥500</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>時間料金</span>
+                        <span id="calc-time-fee">¥0</span>
+                    </div>
+                    <div class="calc-total">
+                        <span>合計</span>
+                        <span id="calc-total-fee">¥0</span>
+                    </div>
+                </div>
+                <p class="calc-note">※料金は目安です。実際の料金と異なる場合があります。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN SCRIPT -->
+    <script src="assets/js/main.js?v=1.1"></script>
+</body>
+
+</html>
