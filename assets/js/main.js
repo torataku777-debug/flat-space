@@ -329,6 +329,109 @@ const init = () => {
             }
         });
     }
+
+    // --- Touch Scroll for Gallery and Games ---
+    function addTouchScroll(wrapper, content) {
+        if (!wrapper || !content) return;
+
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        let velocity = 0;
+        let lastX = 0;
+        let lastTime = Date.now();
+
+        // Pause animation on touch
+        wrapper.addEventListener('touchstart', (e) => {
+            isDown = true;
+            startX = e.touches[0].pageX;
+            lastX = startX;
+            scrollLeft = wrapper.scrollLeft;
+            lastTime = Date.now();
+            velocity = 0;
+            content.style.animationPlayState = 'paused';
+        });
+
+        wrapper.addEventListener('touchmove', (e) => {
+            if (!isDown) return;
+            const x = e.touches[0].pageX;
+            const walk = (x - startX) * 2; // Scroll speed multiplier
+            wrapper.scrollLeft = scrollLeft - walk;
+
+            // Calculate velocity for momentum
+            const now = Date.now();
+            const dt = now - lastTime;
+            if (dt > 0) {
+                velocity = (x - lastX) / dt;
+            }
+            lastX = x;
+            lastTime = now;
+        });
+
+        wrapper.addEventListener('touchend', () => {
+            isDown = false;
+            // Apply momentum scrolling
+            let momentum = velocity * 100;
+            const deceleration = 0.95;
+
+            const momentumScroll = () => {
+                if (Math.abs(momentum) > 0.5) {
+                    wrapper.scrollLeft -= momentum;
+                    momentum *= deceleration;
+                    requestAnimationFrame(momentumScroll);
+                } else {
+                    content.style.animationPlayState = 'running';
+                }
+            };
+            momentumScroll();
+        });
+
+        // Mouse drag support for desktop
+        wrapper.addEventListener('mousedown', (e) => {
+            isDown = true;
+            wrapper.style.cursor = 'grabbing';
+            startX = e.pageX;
+            scrollLeft = wrapper.scrollLeft;
+            content.style.animationPlayState = 'paused';
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            if (isDown) {
+                isDown = false;
+                wrapper.style.cursor = 'grab';
+                content.style.animationPlayState = 'running';
+            }
+        });
+
+        wrapper.addEventListener('mouseup', () => {
+            isDown = false;
+            wrapper.style.cursor = 'grab';
+            content.style.animationPlayState = 'running';
+        });
+
+        wrapper.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX;
+            const walk = (x - startX) * 2;
+            wrapper.scrollLeft = scrollLeft - walk;
+        });
+
+        wrapper.style.cursor = 'grab';
+        wrapper.style.overflowX = 'auto';
+        wrapper.style.scrollbarWidth = 'none'; // Firefox
+        wrapper.style.msOverflowStyle = 'none'; // IE
+    }
+
+    // Apply to gallery
+    const galleryWrapper = document.querySelector('.marquee-wrapper');
+    const galleryContent = document.querySelector('.marquee-content');
+    addTouchScroll(galleryWrapper, galleryContent);
+
+    // Apply to games
+    const gameWrapper = document.querySelector('.game-marquee-wrapper');
+    const gameContent = document.querySelector('.game-marquee-content');
+    addTouchScroll(gameWrapper, gameContent);
 }
 
 if (document.readyState === 'loading') {
