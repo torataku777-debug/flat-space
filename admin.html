@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理画面 | ふらっとスペース</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-box">
+            <img src="assets/images/logo.png" alt="ふらっとスペース Logo" class="login-logo">
+            <h2>管理者ログイン</h2>
+            <input type="password" id="admin-password" placeholder="パスワードを入力" autocomplete="current-password">
+            <button id="login-btn" class="btn-primary">ログイン</button>
+            <p id="login-error" class="error-msg"></p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="admin-dashboard" style="display: none;">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <img src="assets/images/logo.png" alt="Logo" class="admin-logo">
+                <h1>管理画面</h1>
+            </div>
+            <div class="header-right">
+                <button id="export-data-btn" class="btn-secondary">
+                    <i class="fa-solid fa-download"></i> データエクスポート
+                </button>
+                <button id="import-data-btn" class="btn-secondary">
+                    <i class="fa-solid fa-upload"></i> データインポート
+                </button>
+                <button id="logout-btn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> ログアウト
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="admin-tabs">
+            <button class="tab-btn active" data-tab="gallery">
+                <i class="fa-solid fa-images"></i> ギャラリー
+            </button>
+            <button class="tab-btn" data-tab="games">
+                <i class="fa-solid fa-dice"></i> ボードゲーム
+            </button>
+            <button class="tab-btn" data-tab="news">
+                <i class="fa-solid fa-bell"></i> お知らせ
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Gallery Section -->
+            <section id="tab-gallery" class="tab-content active">
+                <div class="section-header">
+                    <h2>ギャラリー管理</h2>
+                    <button id="add-gallery-btn" class="btn-primary">
+                        <i class="fa-solid fa-plus"></i> 画像を追加
+                    </button>
+                </div>
+                <div id="gallery-list" class="gallery-grid"></div>
+            </section>
+
+            <!-- Games Section -->
+            <section id="tab-games" class="tab-content">
+                <div class="section-header">
+                    <h2>ボードゲーム管理</h2>
+                    <button id="add-game-btn" class="btn-primary">
+                        <i class="fa-solid fa-plus"></i> ゲームを追加
+                    </button>
+                </div>
+                <div class="info-box">
+                    <i class="fa-solid fa-info-circle"></i>
+                    ピックアップにチェックを入れると、トップページに表示されます（最大8個）
+                </div>
+                <div id="games-list" class="games-table"></div>
+            </section>
+
+            <!-- News Section -->
+            <section id="tab-news" class="tab-content">
+                <div class="section-header">
+                    <h2>お知らせ管理</h2>
+                    <button id="add-news-btn" class="btn-primary">
+                        <i class="fa-solid fa-plus"></i> お知らせを追加
+                    </button>
+                </div>
+                <div id="news-list" class="news-table"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>ギャラリー画像を追加</h3>
+            <div class="form-group">
+                <label>画像URL</label>
+                <input type="text" id="gallery-url" placeholder="https://example.com/image.jpg">
+            </div>
+            <div class="modal-actions">
+                <button id="save-gallery-btn" class="btn-primary">保存</button>
+                <button class="btn-secondary close-modal">キャンセル</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div id="game-modal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close-modal">&times;</span>
+            <h3 id="game-modal-title">ゲームを追加</h3>
+            <div class="form-group">
+                <label>タイトル <span class="required">*</span></label>
+                <input type="text" id="game-title" placeholder="例: Catan">
+            </div>
+            <div class="form-group">
+                <label>説明文 <span class="required">*</span></label>
+                <textarea id="game-desc" rows="3" placeholder="ゲームの簡単な説明"></textarea>
+            </div>
+            <div class="form-group">
+                <label>画像URL <span class="required">*</span></label>
+                <input type="text" id="game-img" placeholder="https://example.com/game.jpg">
+            </div>
+            <div class="form-group">
+                <label>タグ（カンマ区切り）</label>
+                <input type="text" id="game-tags" placeholder="例: #初心者歓迎,#60分～">
+            </div>
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="game-featured">
+                    <span>ピックアップ（トップページに表示）</span>
+                </label>
+            </div>
+            <div class="modal-actions">
+                <button id="save-game-btn" class="btn-primary">保存</button>
+                <button class="btn-secondary close-modal">キャンセル</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- News Modal -->
+    <div id="news-modal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close-modal">&times;</span>
+            <h3 id="news-modal-title">お知らせを追加</h3>
+            <div class="form-group">
+                <label>タイトル <span class="required">*</span></label>
+                <input type="text" id="news-title" placeholder="例: 営業時間変更のお知らせ">
+            </div>
+            <div class="form-group">
+                <label>本文 <span class="required">*</span></label>
+                <textarea id="news-content" rows="5" placeholder="お知らせの詳細"></textarea>
+            </div>
+            <div class="form-group">
+                <label>公開日</label>
+                <input type="date" id="news-date">
+            </div>
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="news-important">
+                    <span>重要なお知らせ</span>
+                </label>
+            </div>
+            <div class="modal-actions">
+                <button id="save-news-btn" class="btn-primary">保存</button>
+                <button class="btn-secondary close-modal">キャンセル</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="import-file-input" accept=".json" style="display: none;">
+
+    <script src="assets/js/admin.js"></script>
+</body>
+
+</html>

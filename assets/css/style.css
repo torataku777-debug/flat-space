@@ -724,6 +724,69 @@ header.scrolled {
     gap: 30px;
 }
 
+/* News Section */
+.news-list {
+    display: grid;
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.news-item {
+    background: white;
+    padding: 30px;
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    border-left: 4px solid #e1e4e8;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.news-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.news-item.important {
+    border-left-color: var(--primary-color);
+    background: linear-gradient(to right, rgba(230, 149, 0, 0.03), white);
+}
+
+.news-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.news-date {
+    font-size: 0.9rem;
+    color: #888;
+    font-family: var(--font-heading);
+}
+
+.news-badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.news-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.news-content {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.8;
+}
+
+/* Game Library */
 .game-item {
     position: relative;
     cursor: pointer;

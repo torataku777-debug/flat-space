@@ -102,18 +102,49 @@ const init = () => {
         });
     });
 
-    // --- Game Library Grid & Modal ---
-    const games = [
-        { title: "Catan", desc: "無人島を開拓する世界的ベストセラー。", img: "assets/images/game_catan.jpg", tags: ["#初心者歓迎", "#60分〜"] },
-        { title: "Dominion", desc: "自分だけのデッキを構築するカードゲーム。", img: "assets/images/game_dominion.jpg", tags: ["#戦略", "#30分〜"] },
-        { title: "Blokus", desc: "テトリスのようなピースを角で繋げる陣取りゲーム。", img: "assets/images/game_blokus.jpg", tags: ["#パズル", "#20分〜"] },
-        { title: "Geister", desc: "良いオバケと悪いオバケを取り合う心理戦。", img: "assets/images/game_geister.jpg", tags: ["#心理戦", "#15分〜"] },
-        { title: "Ito", desc: "数字を言葉で例えて協力するパーティーゲーム。", img: "assets/images/game_sample.png", tags: ["#盛り上がる", "#20分〜"] },
-        { title: "Splendor", desc: "宝石商となり威信ポイントを稼ぐ戦略ゲーム。", img: "assets/images/game_sample.png", tags: ["#買い物", "#30分〜"] },
-        { title: "Dixit", desc: "抽象的な絵柄から親の想像を当てるゲーム。", img: "assets/images/game_sample.png", tags: ["#想像力", "#30分〜"] },
-        { title: "Skull", desc: "嘘と度胸の心理戦ブラフゲーム。", img: "assets/images/game_sample.png", tags: ["#心理戦", "#15分〜"] }
-    ];
+    // --- Dynamic Gallery from LocalStorage ---
+    function loadGallery() {
+        const galleryContent = document.querySelector('.marquee-content');
+        if (!galleryContent) return;
 
+        const galleryData = localStorage.getItem('flatspace_gallery');
+        const images = galleryData ? JSON.parse(galleryData) : [
+            'assets/images/gallery_01.jpg',
+            'assets/images/gallery_02.jpg',
+            'assets/images/gallery_03.jpg',
+            'assets/images/gallery_04.jpg',
+            'assets/images/gallery_05.jpg'
+        ];
+
+        // Double the array for seamless loop
+        const doubled = [...images, ...images];
+
+        galleryContent.innerHTML = doubled.map((img, index) => `
+            <div class="gallery-item">
+                <img src="${img}" alt="Interior View ${(index % images.length) + 1}">
+            </div>
+        `).join('');
+    }
+
+    loadGallery();
+
+    // --- Game Library Grid & Modal ---
+    // Load games from localStorage or use default data
+    function getGamesData() {
+        const data = localStorage.getItem('flatspace_games');
+        return data ? JSON.parse(data) : [
+            { id: 1, title: "Catan", desc: "無人島を開拓する世界的ベストセラー。", img: "assets/images/game_catan.jpg", tags: ["#初心者歓迎", "#60分〜"], featured: true },
+            { id: 2, title: "Dominion", desc: "自分だけのデッキを構築するカードゲーム。", img: "assets/images/game_dominion.jpg", tags: ["#戦略", "#30分〜"], featured: true },
+            { id: 3, title: "Blokus", desc: "テトリスのようなピースを角で繋げる陣取りゲーム。", img: "assets/images/game_blokus.jpg", tags: ["#パズル", "#20分〜"], featured: true },
+            { id: 4, title: "Geister", desc: "良いオバケと悪いオバケを取り合う心理戦。", img: "assets/images/game_geister.jpg", tags: ["#心理戦", "#15分〜"], featured: true },
+            { id: 5, title: "Ito", desc: "数字を言葉で例えて協力するパーティーゲーム。", img: "assets/images/game_sample.png", tags: ["#盛り上がる", "#20分〜"], featured: true },
+            { id: 6, title: "Splendor", desc: "宝石商となり威信ポイントを稼ぐ戦略ゲーム。", img: "assets/images/game_sample.png", tags: ["#買い物", "#30分〜"], featured: true },
+            { id: 7, title: "Dixit", desc: "抽象的な絵柄から親の想像を当てるゲーム。", img: "assets/images/game_sample.png", tags: ["#想像力", "#30分〜"], featured: true },
+            { id: 8, title: "Skull", desc: "嘘と度胸の心理戦ブラフゲーム。", img: "assets/images/game_sample.png", tags: ["#心理戦", "#15分〜"], featured: true }
+        ];
+    }
+
+    const games = getGamesData();
     const gameGridFull = document.getElementById('game-grid-full'); // For games.html
 
     const modal = document.getElementById('game-modal');
@@ -153,7 +184,7 @@ const init = () => {
         });
     }
 
-    // Populate Home Page (Grid)
+    // Populate Home Page (Featured games only)
     const gameLibraryGrid = document.getElementById('game-library-grid');
 
     if (gameLibraryGrid) {
@@ -161,10 +192,10 @@ const init = () => {
             // Clear static content first
             gameLibraryGrid.innerHTML = '';
 
-            // Display top 8 games
-            const topGames = games.slice(0, 8);
+            // Display featured games (max 8)
+            const featuredGames = games.filter(g => g.featured).slice(0, 8);
 
-            topGames.forEach(game => {
+            featuredGames.forEach(game => {
                 const item = createGameElement(game);
                 gameLibraryGrid.appendChild(item);
             });
@@ -432,6 +463,34 @@ const init = () => {
     const gameWrapper = document.querySelector('.game-marquee-wrapper');
     const gameContent = document.querySelector('.game-marquee-content');
     addTouchScroll(gameWrapper, gameContent);
+
+    // --- Dynamic News from LocalStorage ---
+    function loadNews() {
+        const newsList = document.getElementById('news-list');
+        if (!newsList) return;
+
+        const newsData = localStorage.getItem('flatspace_news');
+        const news = newsData ? JSON.parse(newsData) : [
+            { id: 1, title: "オープン記念キャンペーン", content: "オープン記念で入場料無料キャンペーン実施中！", date: "2024-01-15", important: true },
+            { id: 2, title: "営業時間のお知らせ", content: "平日12:00-22:00、土日祝11:00-23:00で営業しております。", date: "2024-01-10", important: false }
+        ];
+
+        // Sort by date (newest first)
+        news.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        newsList.innerHTML = news.map(item => `
+            <div class="news-item ${item.important ? 'important' : ''}">
+                <div class="news-header">
+                    <span class="news-date">${item.date}</span>
+                    ${item.important ? '<span class="news-badge">重要</span>' : ''}
+                </div>
+                <h3 class="news-title">${item.title}</h3>
+                <p class="news-content">${item.content}</p>
+            </div>
+        `).join('');
+    }
+
+    loadNews();
 }
 
 if (document.readyState === 'loading') {
