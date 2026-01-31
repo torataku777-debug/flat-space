@@ -107,10 +107,36 @@
         <div class="modal-content">
             <span class="close-modal">&times;</span>
             <h3>ギャラリー画像を追加</h3>
-            <div class="form-group">
-                <label>画像URL</label>
-                <input type="text" id="gallery-url" placeholder="https://example.com/image.jpg">
+
+            <div class="upload-tabs">
+                <button class="upload-tab-btn active" data-tab="url">URLで指定</button>
+                <button class="upload-tab-btn" data-tab="upload">ファイルをアップロード</button>
             </div>
+
+            <!-- URL Tab -->
+            <div id="gallery-url-tab" class="upload-tab-content active">
+                <div class="form-group">
+                    <label>画像URL</label>
+                    <input type="text" id="gallery-url" placeholder="https://example.com/image.jpg">
+                </div>
+            </div>
+
+            <!-- Upload Tab -->
+            <div id="gallery-upload-tab" class="upload-tab-content">
+                <div class="upload-buttons">
+                    <button type="button" class="btn-upload" id="gallery-file-btn">
+                        <i class="fa-solid fa-folder-open"></i> フォルダから選択
+                    </button>
+                    <button type="button" class="btn-upload" id="gallery-camera-btn">
+                        <i class="fa-solid fa-camera"></i> カメラで撮影
+                    </button>
+                </div>
+                <input type="file" id="gallery-file-input" accept="image/*" style="display: none;">
+                <input type="file" id="gallery-camera-input" accept="image/*" capture="environment"
+                    style="display: none;">
+                <div id="gallery-preview" class="image-preview"></div>
+            </div>
+
             <div class="modal-actions">
                 <button id="save-gallery-btn" class="btn-primary">保存</button>
                 <button class="btn-secondary close-modal">キャンセル</button>
@@ -131,10 +157,36 @@
                 <label>説明文 <span class="required">*</span></label>
                 <textarea id="game-desc" rows="3" placeholder="ゲームの簡単な説明"></textarea>
             </div>
+
             <div class="form-group">
-                <label>画像URL <span class="required">*</span></label>
-                <input type="text" id="game-img" placeholder="https://example.com/game.jpg">
+                <label>画像 <span class="required">*</span></label>
+                <div class="upload-tabs">
+                    <button class="upload-tab-btn active" data-tab="url">URLで指定</button>
+                    <button class="upload-tab-btn" data-tab="upload">ファイルをアップロード</button>
+                </div>
+
+                <!-- URL Tab -->
+                <div id="game-url-tab" class="upload-tab-content active">
+                    <input type="text" id="game-img" placeholder="https://example.com/game.jpg">
+                </div>
+
+                <!-- Upload Tab -->
+                <div id="game-upload-tab" class="upload-tab-content">
+                    <div class="upload-buttons">
+                        <button type="button" class="btn-upload" id="game-file-btn">
+                            <i class="fa-solid fa-folder-open"></i> フォルダから選択
+                        </button>
+                        <button type="button" class="btn-upload" id="game-camera-btn">
+                            <i class="fa-solid fa-camera"></i> カメラで撮影
+                        </button>
+                    </div>
+                    <input type="file" id="game-file-input" accept="image/*" style="display: none;">
+                    <input type="file" id="game-camera-input" accept="image/*" capture="environment"
+                        style="display: none;">
+                    <div id="game-preview" class="image-preview"></div>
+                </div>
             </div>
+
             <div class="form-group">
                 <label>タグ（カンマ区切り）</label>
                 <input type="text" id="game-tags" placeholder="例: #初心者歓迎,#60分～">
@@ -177,6 +229,29 @@
             </div>
             <div class="modal-actions">
                 <button id="save-news-btn" class="btn-primary">保存</button>
+                <button class="btn-secondary close-modal">キャンセル</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Crop Modal -->
+    <div id="crop-modal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close-modal">&times;</span>
+            <h3>画像をトリミング（正方形）</h3>
+            <div class="crop-container">
+                <canvas id="crop-canvas"></canvas>
+            </div>
+            <div class="crop-controls">
+                <button id="crop-zoom-in" class="btn-secondary btn-small">
+                    <i class="fa-solid fa-magnifying-glass-plus"></i>
+                </button>
+                <button id="crop-zoom-out" class="btn-secondary btn-small">
+                    <i class="fa-solid fa-magnifying-glass-minus"></i>
+                </button>
+            </div>
+            <div class="modal-actions">
+                <button id="crop-confirm-btn" class="btn-primary">トリミング完了</button>
                 <button class="btn-secondary close-modal">キャンセル</button>
             </div>
         </div>

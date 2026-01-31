@@ -14,6 +14,12 @@ const STORAGE_KEYS = {
 // State
 let currentEditingId = null;
 let currentTab = 'gallery';
+let currentUploadedImage = null; // For storing uploaded image data
+let currentCropTarget = null; // 'gallery' or 'game'
+let cropImage = null;
+let cropScale = 1;
+let cropX = 0;
+let cropY = 0;
 
 // =========================================
 // AUTHENTICATION
@@ -523,6 +529,9 @@ function initAdmin() {
             }
         });
     });
+
+    // Setup image upload functionality
+    setupImageUpload();
 }
 
 // Initialize on load
@@ -536,3 +545,335 @@ if (checkAuth()) {
         if (e.key === 'Enter') login();
     });
 }
+
+// =========================================
+// IMAGE UPLOAD & CROP FUNCTIONALITY
+// =========================================
+
+// Upload Tab Switching
+function setupUploadTabs(modalPrefix) {
+    const tabBtns = document.querySelectorAll(`#${modalPrefix}-modal .upload-tab-btn`);
+    const tabContents = document.querySelectorAll(`#${modalPrefix}-modal .upload-tab-content`);
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all tabs
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+
+            // Add active class to clicked tab
+            btn.classList.add('active');
+            const tabName = btn.dataset.tab;
+            document.getElementById(`${modalPrefix}-${tabName}-tab`).classList.add('active');
+        });
+    });
+}
+
+// Handle Image File Selection
+function handleImageSelect(file, target) {
+    if (!file || !file.type.startsWith('image/')) {
+        alert('画像ファイルを選択してください');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const imageData = e.target.result;
+
+        if (target === 'game') {
+            // For game images, open crop modal
+            currentCropTarget = 'game';
+            openCropModal(imageData);
+        } else {
+            // For gallery, show preview and store data
+            currentUploadedImage = imageData;
+            const preview = document.getElementById('gallery-preview');
+            preview.innerHTML = `<img src="${imageData}" alt="Preview">`;
+
+            // Update the URL input with a placeholder
+            document.getElementById('gallery-url').value = '[アップロード画像]';
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+// Open Crop Modal
+function openCropModal(imageData) {
+    const modal = document.getElementById('crop-modal');
+    const canvas = document.getElementById('crop-canvas');
+    const ctx = canvas.getContext('2d');
+
+    cropImage = new Image();
+    cropImage.onload = () => {
+        // Set initial scale and position
+        const size = Math.max(cropImage.width, cropImage.height);
+        canvas.width = 500;
+        canvas.height = 500;
+
+        cropScale = Math.max(canvas.width / cropImage.width, canvas.height / cropImage.height);
+        cropX = (canvas.width - cropImage.width * cropScale) / 2;
+        cropY = (canvas.height - cropImage.height * cropScale) / 2;
+
+        drawCropCanvas();
+        showModal(modal);
+    };
+    cropImage.src = imageData;
+}
+
+// Draw Crop Canvas
+function drawCropCanvas() {
+    const canvas = document.getElementById('crop-canvas');
+    const ctx = canvas.getContext('2d');
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.drawImage(cropImage, cropX, cropY, cropImage.width * cropScale, cropImage.height * cropScale);
+    ctx.restore();
+
+    // Draw crop area overlay
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    const cropSize = Math.min(canvas.width, canvas.height);
+    const cropLeft = (canvas.width - cropSize) / 2;
+    const cropTop = (canvas.height - cropSize) / 2;
+
+    // Draw overlay
+    ctx.fillRect(0, 0, canvas.width, cropTop);
+    ctx.fillRect(0, cropTop, cropLeft, cropSize);
+    ctx.fillRect(cropLeft + cropSize, cropTop, canvas.width - (cropLeft + cropSize), cropSize);
+    ctx.fillRect(0, cropTop + cropSize, canvas.width, canvas.height - (cropTop + cropSize));
+
+    // Draw crop border
+    ctx.strokeStyle = '#E69500';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(cropLeft, cropTop, cropSize, cropSize);
+}
+
+// Zoom Controls
+function zoomCrop(direction) {
+    const canvas = document.getElementById('crop-canvas');
+    const factor = direction === 'in' ? 1.1 : 0.9;
+    const newScale = cropScale * factor;
+
+    // Calculate new position to keep center
+    const centerX = cropX + (cropImage.width * cropScale) / 2;
+    const centerY = cropY + (cropImage.height * cropScale) / 2;
+
+    cropScale = newScale;
+    cropX = centerX - (cropImage.width * cropScale) / 2;
+    cropY = centerY - (cropImage.height * cropScale) / 2;
+
+    drawCropCanvas();
+}
+
+// Canvas Dragging
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+
+function setupCanvasDrag() {
+    const canvas = document.getElementById('crop-canvas');
+
+    canvas.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        dragStartX = e.offsetX - cropX;
+        dragStartY = e.offsetY - cropY;
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        cropX = e.offsetX - dragStartX;
+        cropY = e.offsetY - dragStartY;
+        drawCropCanvas();
+    });
+
+    canvas.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
+
+    // Touch support
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        isDragging = true;
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        dragStartX = touch.clientX - rect.left - cropX;
+        dragStartY = touch.clientY - rect.top - cropY;
+    });
+
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (!isDragging) return;
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        cropX = touch.clientX - rect.left - dragStartX;
+        cropY = touch.clientY - rect.top - dragStartY;
+        drawCropCanvas();
+    });
+
+    canvas.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+}
+
+// Confirm Crop
+function confirmCrop() {
+    const canvas = document.getElementById('crop-canvas');
+    const outputCanvas = document.createElement('canvas');
+    const ctx = outputCanvas.getContext('2d');
+
+    const cropSize = Math.min(canvas.width, canvas.height);
+    const cropLeft = (canvas.width - cropSize) / 2;
+    const cropTop = (canvas.height - cropSize) / 2;
+
+    outputCanvas.width = 500;
+    outputCanvas.height = 500;
+
+    // Draw cropped portion
+    ctx.drawImage(
+        canvas,
+        cropLeft, cropTop, cropSize, cropSize,
+        0, 0, 500, 500
+    );
+
+    const croppedData = outputCanvas.toDataURL('image/jpeg', 0.9);
+
+    if (currentCropTarget === 'game') {
+        currentUploadedImage = croppedData;
+        const preview = document.getElementById('game-preview');
+        preview.innerHTML = `<img src="${croppedData}" alt="Preview">`;
+        document.getElementById('game-img').value = '[アップロード画像]';
+    }
+
+    closeModal('crop-modal');
+}
+
+// Update Gallery Save Function
+function addGalleryItem() {
+    let url = document.getElementById('gallery-url').value.trim();
+
+    // Check if it's an uploaded image
+    if (url === '[アップロード画像]' && currentUploadedImage) {
+        url = currentUploadedImage;
+    }
+
+    if (!url) {
+        alert('画像URLを入力するか、画像をアップロードしてください');
+        return;
+    }
+
+    const data = getGalleryData();
+    data.push(url);
+    saveGalleryData(data);
+    renderGallery();
+    closeModal('gallery-modal');
+
+    // Reset
+    document.getElementById('gallery-url').value = '';
+    currentUploadedImage = null;
+    document.getElementById('gallery-preview').innerHTML = '';
+}
+
+// Update Game Save Function
+function saveGame() {
+    const title = document.getElementById('game-title').value.trim();
+    const desc = document.getElementById('game-desc').value.trim();
+    let img = document.getElementById('game-img').value.trim();
+    const tagsStr = document.getElementById('game-tags').value.trim();
+    const featured = document.getElementById('game-featured').checked;
+
+    // Check if it's an uploaded image
+    if (img === '[アップロード画像]' && currentUploadedImage) {
+        img = currentUploadedImage;
+    }
+
+    if (!title || !desc || !img) {
+        alert('必須項目を入力してください');
+        return;
+    }
+
+    const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(t => t) : [];
+    const data = getGamesData();
+
+    if (currentEditingId) {
+        const game = data.find(g => g.id === currentEditingId);
+        if (game) {
+            game.title = title;
+            game.desc = desc;
+            game.img = img;
+            game.tags = tags;
+            game.featured = featured;
+        }
+    } else {
+        const newId = data.length > 0 ? Math.max(...data.map(g => g.id)) + 1 : 1;
+        data.push({ id: newId, title, desc, img, tags, featured });
+    }
+
+    saveGamesData(data);
+    renderGames();
+    closeModal('game-modal');
+
+    // Reset
+    currentUploadedImage = null;
+    document.getElementById('game-preview').innerHTML = '';
+}
+
+// Setup Upload Event Listeners
+function setupImageUpload() {
+    setupUploadTabs('gallery');
+    setupUploadTabs('game');
+    setupCanvasDrag();
+
+    // Gallery upload buttons
+    document.getElementById('gallery-file-btn').addEventListener('click', () => {
+        document.getElementById('gallery-file-input').click();
+    });
+
+    document.getElementById('gallery-camera-btn').addEventListener('click', () => {
+        document.getElementById('gallery-camera-input').click();
+    });
+
+    document.getElementById('gallery-file-input').addEventListener('change', (e) => {
+        if (e.target.files[0]) {
+            handleImageSelect(e.target.files[0], 'gallery');
+        }
+    });
+
+    document.getElementById('gallery-camera-input').addEventListener('change', (e) => {
+        if (e.target.files[0]) {
+            handleImageSelect(e.target.files[0], 'gallery');
+        }
+    });
+
+    // Game upload buttons
+    document.getElementById('game-file-btn').addEventListener('click', () => {
+        document.getElementById('game-file-input').click();
+    });
+
+    document.getElementById('game-camera-btn').addEventListener('click', () => {
+        document.getElementById('game-camera-input').click();
+    });
+
+    document.getElementById('game-file-input').addEventListener('change', (e) => {
+        if (e.target.files[0]) {
+            handleImageSelect(e.target.files[0], 'game');
+        }
+    });
+
+    document.getElementById('game-camera-input').addEventListener('change', (e) => {
+        if (e.target.files[0]) {
+            handleImageSelect(e.target.files[0], 'game');
+        }
+    });
+
+    // Crop controls
+    document.getElementById('crop-zoom-in').addEventListener('click', () => zoomCrop('in'));
+    document.getElementById('crop-zoom-out').addEventListener('click', () => zoomCrop('out'));
+    document.getElementById('crop-confirm-btn').addEventListener('click', confirmCrop);
+}
+
+// Add setupImageUpload to initAdmin
+// Modify the initAdmin function to include this at the end
