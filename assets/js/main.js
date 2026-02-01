@@ -142,8 +142,16 @@ const init = async () => {
     async function getGamesData() {
         // Try Supabase first
         if (typeof getGamesDataFromDB !== 'undefined') {
+            console.log('[DEBUG] Attempting to fetch from DB...');
             const dbData = await getGamesDataFromDB();
-            if (dbData) return dbData;
+            if (dbData && dbData.length > 0) {
+                console.log('[DEBUG] Fetched from DB:', dbData);
+                return dbData;
+            } else {
+                console.warn('[DEBUG] DB returned empty or null. Fallback to localStorage.');
+            }
+        } else {
+            console.error('[DEBUG] getGamesDataFromDB is undefined');
         }
 
         // Fallback to localStorage
