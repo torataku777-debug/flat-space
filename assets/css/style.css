@@ -430,6 +430,59 @@ header.scrolled {
     color: #666;
 }
 
+/* Featured Badge */
+.featured-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px auto 15px;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+    animation: pulse-badge 2s ease-in-out infinite;
+    max-width: fit-content;
+}
+
+.featured-badge .badge-icon {
+    font-size: 1.5rem;
+    animation: bounce-icon 1s ease-in-out infinite;
+}
+
+.featured-badge .badge-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.05em;
+}
+
+@keyframes pulse-badge {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+    }
+
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px rgba(238, 90, 36, 0.6);
+    }
+}
+
+@keyframes bounce-icon {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
 /* Gallery (Marquee) */
 .gallery-wrapper {
     width: 100%;
