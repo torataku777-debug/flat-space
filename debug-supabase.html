@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Connection Debug</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-env.js"></script>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #222;
+            color: #0f0;
+        }
+
+        .log-entry {
+            margin-bottom: 10px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+
+        .error {
+            color: #f55;
+        }
+
+        .success {
+            color: #5f5;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Supabase Connection Debugger</h2>
+    <div id="status">Testing connection...</div>
+    <div id="logs"></div>
+
+    <script>
+        const logDiv = document.getElementById('logs');
+        function log(msg, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `log-entry ${type}`;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logDiv.appendChild(div);
+            console.log(msg);
+        }
+
+        async function runTest() {
+            try {
+                // 1. Check Config
+                if (!window.SUPABASE_URL || !window.SUPABASE_ANON_KEY) {
+                    log('ERROR: Credentials missing in window object.', 'error');
+                    return;
+                }
+                log(`Config Found. URL: ${window.SUPABASE_URL}`);
+
+                // 2. Initialize
+                const supabase = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+                log('Supabase Client Initialized.');
+
+                // 3. Test Games Fetch
+                log('Fetching from "games" table...');
+                const { data, error } = await supabase.from('games').select('*');
+
+                if (error) {
+                    log(`FETCH ERROR: ${error.message} (Code: ${error.code})`, 'error');
+                    if (error.details) log(`Details: ${error.details}`, 'error');
+                    if (error.hint) log(`Hint: ${error.hint}`, 'error');
+                } else {
+                    log(`SUCCESS! Fetched ${data.length} records.`, 'success');
+                    if (data.length > 0) {
+                        log('First record sample:', 'info');
+                        log(JSON.stringify(data[0], null, 2));
+                    } else {
+                        log('Table is empty but access is OK.', 'warning');
+                    }
+                }
+
+            } catch (err) {
+                log(`CRITICAL EXCEPTION: ${err.message}`, 'error');
+            }
+        }
+
+        runTest();
+    </script>
+</body>
+
+</html>
