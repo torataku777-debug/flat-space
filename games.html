@@ -615,22 +615,25 @@
 
         @media (max-width: 768px) {
             .bookshelf-row {
-                gap: 15px;
-                padding: 20px 20px 0;
-                flex-wrap: wrap;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+                padding: 20px 15px 0;
+                justify-items: center;
             }
 
             .game-item {
-                width: 110px;
+                width: 100%;
+                max-width: 100px;
             }
 
-            .game-tags span {
-                font-size: 0.55rem;
-                padding: 1px 5px;
+            .game-tags {
+                display: none;
             }
 
             .game-title-overlay {
-                font-size: 0.65rem;
+                font-size: 0.6rem;
+                margin-top: 5px;
             }
         }
 

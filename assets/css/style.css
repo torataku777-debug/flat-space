@@ -1221,10 +1221,10 @@ footer {
         transform: translateY(-5px);
     }
 
-    /* Gallery: smaller on mobile */
+    /* Gallery: larger on mobile */
     .gallery-item {
-        width: 280px;
-        height: 180px;
+        width: 340px;
+        height: 240px;
     }
 
     .hero-bg-single {
