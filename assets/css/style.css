@@ -439,8 +439,10 @@ header.scrolled {
 
 .marquee-wrapper {
     width: 100%;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
 }
 
 .marquee-content {
@@ -495,8 +497,8 @@ header.scrolled {
     }
 
     100% {
-        transform: translateX(-50%);
-        /* Move half the width (since we duplicated) */
+        transform: translateX(-33.333%);
+        /* Move one third of the width (since we tripled) */
     }
 }
 
@@ -509,9 +511,11 @@ header.scrolled {
 /* Game Marquee (Horizontal Scroll) */
 .game-marquee-wrapper {
     width: 100%;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     padding: 40px 0;
     position: relative;
+    -webkit-overflow-scrolling: touch;
 }
 
 .game-marquee-content {
@@ -530,7 +534,8 @@ header.scrolled {
     }
 
     100% {
-        transform: translateX(-50%);
+        transform: translateX(-33.333%);
+        /* Move one third of the width (since we tripled) */
     }
 }
 
@@ -545,7 +550,7 @@ header.scrolled {
 
 .game-item {
     flex-shrink: 0;
-    width: 220px;
+    width: 280px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     overflow: hidden;

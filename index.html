@@ -17,6 +17,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 
 <body>
@@ -97,7 +101,18 @@
                             </div>
                             <div class="gallery-item"><img src="assets/images/gallery_05.jpg" alt="Interior View 5">
                             </div>
-                            <!-- Set 2 (Duplicate for Loop) -->
+                            <!-- Set 2 -->
+                            <div class="gallery-item"><img src="assets/images/gallery_01.jpg" alt="Interior View 1">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_02.jpg" alt="Interior View 2">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_03.jpg" alt="Interior View 3">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_04.jpg" alt="Interior View 4">
+                            </div>
+                            <div class="gallery-item"><img src="assets/images/gallery_05.jpg" alt="Interior View 5">
+                            </div>
+                            <!-- Set 3 (Triple for Loop) -->
                             <div class="gallery-item"><img src="assets/images/gallery_01.jpg" alt="Interior View 1">
                             </div>
                             <div class="gallery-item"><img src="assets/images/gallery_02.jpg" alt="Interior View 2">
@@ -114,13 +129,6 @@
             </div>
         </section>
 
-        <!-- News Section -->
-        <section id="news" class="section">
-            <div class="container">
-                <h2 class="section-title">NEWS<span class="jp-title">お知らせ</span></h2>
-                <div id="news-list" class="news-list"></div>
-            </div>
-        </section>
 
         <!-- Price Section -->
         <section id="price" class="section">
@@ -160,11 +168,19 @@
             </div>
         </section>
 
+        <!-- News Section -->
+        <section id="news" class="section">
+            <div class="container">
+                <h2 class="section-title">NEWS<span class="jp-title">お知らせ</span></h2>
+                <div id="news-list" class="news-list"></div>
+            </div>
+        </section>
+
         <!-- Game Library Section -->
         <section id="games" class="section">
             <div class="container-fluid" style="padding: 0;">
                 <h2 class="section-title">GAMES<span class="jp-title">遊べるゲーム</span></h2>
-                <p class="section-desc">本棚から好きな本を選ぶように、<br>気になるゲームを見つけてください。</p>
+                <p class="section-desc">気になるゲームを見つけてください。</p>
 
                 <div class="game-marquee-wrapper">
                     <div class="game-marquee-content">
@@ -211,6 +227,48 @@
                             <div class="game-title-overlay">Skull</div>
                         </div>
                         <!-- Set 2 (Duplicate for seamless loop) -->
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"></div>
+                            <div class="game-tags"><span>#初心者歓迎</span><span>#60分〜</span></div>
+                            <div class="game-title-overlay">Catan</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion">
+                            </div>
+                            <div class="game-tags"><span>#戦略</span><span>#30分〜</span></div>
+                            <div class="game-title-overlay">Dominion</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"></div>
+                            <div class="game-tags"><span>#パズル</span><span>#20分〜</span></div>
+                            <div class="game-title-overlay">Blokus</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"></div>
+                            <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
+                            <div class="game-title-overlay">Geister</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"></div>
+                            <div class="game-tags"><span>#盛り上がる</span><span>#20分〜</span></div>
+                            <div class="game-title-overlay">Ito</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"></div>
+                            <div class="game-tags"><span>#買い物</span><span>#30分〜</span></div>
+                            <div class="game-title-overlay">Splendor</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"></div>
+                            <div class="game-tags"><span>#想像力</span><span>#30分〜</span></div>
+                            <div class="game-title-overlay">Dixit</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"></div>
+                            <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
+                            <div class="game-title-overlay">Skull</div>
+                        </div>
+                        <!-- Set 3 (Triple for Loop) -->
                         <div class="game-item">
                             <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"></div>
                             <div class="game-tags"><span>#初心者歓迎</span><span>#60分〜</span></div>
@@ -363,7 +421,11 @@
     </div>
 
     <!-- MAIN SCRIPT -->
+    <script src="supabase-env.js"></script>
+    <script src="assets/js/supabase-config.js"></script>
     <script src="assets/js/main.js?v=1.1"></script>
+
+
 </body>
 
 </html>

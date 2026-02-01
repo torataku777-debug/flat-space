@@ -1,4 +1,4 @@
-const init = () => {
+const init = async () => {
 
     // --- Opening Video ---
     const openingOverlay = document.getElementById('opening-overlay');
@@ -102,24 +102,33 @@ const init = () => {
         });
     });
 
-    // --- Dynamic Gallery from LocalStorage ---
-    function loadGallery() {
+    // --- Dynamic Gallery from LocalStorage or Supabase ---
+    async function loadGallery() {
         const galleryContent = document.querySelector('.marquee-content');
         if (!galleryContent) return;
 
-        const galleryData = localStorage.getItem('flatspace_gallery');
-        const images = galleryData ? JSON.parse(galleryData) : [
-            'assets/images/gallery_01.jpg',
-            'assets/images/gallery_02.jpg',
-            'assets/images/gallery_03.jpg',
-            'assets/images/gallery_04.jpg',
-            'assets/images/gallery_05.jpg'
-        ];
+        // Try Supabase first
+        let images = null;
+        if (typeof getGalleryDataFromDB !== 'undefined') {
+            images = await getGalleryDataFromDB();
+        }
 
-        // Double the array for seamless loop
-        const doubled = [...images, ...images];
+        // Fallback to localStorage
+        if (!images) {
+            const galleryData = localStorage.getItem('flatspace_gallery');
+            images = galleryData ? JSON.parse(galleryData) : [
+                'assets/images/gallery_01.jpg',
+                'assets/images/gallery_02.jpg',
+                'assets/images/gallery_03.jpg',
+                'assets/images/gallery_04.jpg',
+                'assets/images/gallery_05.jpg'
+            ];
+        }
 
-        galleryContent.innerHTML = doubled.map((img, index) => `
+        // Triple the array for seamless infinite loop
+        const tripled = [...images, ...images, ...images];
+
+        galleryContent.innerHTML = tripled.map((img, index) => `
             <div class="gallery-item">
                 <img src="${img}" alt="Interior View ${(index % images.length) + 1}">
             </div>
@@ -129,8 +138,15 @@ const init = () => {
     loadGallery();
 
     // --- Game Library Grid & Modal ---
-    // Load games from localStorage or use default data
-    function getGamesData() {
+    // Load games from Supabase or localStorage
+    async function getGamesData() {
+        // Try Supabase first
+        if (typeof getGamesDataFromDB !== 'undefined') {
+            const dbData = await getGamesDataFromDB();
+            if (dbData) return dbData;
+        }
+
+        // Fallback to localStorage
         const data = localStorage.getItem('flatspace_games');
         return data ? JSON.parse(data) : [
             { id: 1, title: "Catan", desc: "無人島を開拓する世界的ベストセラー。", img: "assets/images/game_catan.jpg", tags: ["#初心者歓迎", "#60分〜"], featured: true },
@@ -144,7 +160,7 @@ const init = () => {
         ];
     }
 
-    const games = getGamesData();
+    const games = await getGamesData();
     const gameGridFull = document.getElementById('game-grid-full'); // For games.html
 
     const modal = document.getElementById('game-modal');
@@ -184,24 +200,40 @@ const init = () => {
         });
     }
 
-    // Populate Home Page (Featured games only)
-    const gameLibraryGrid = document.getElementById('game-library-grid');
+    // Populate Home Page (Featured games only - in marquee)
+    const gameMarqueeContent = document.querySelector('.game-marquee-content');
 
-    if (gameLibraryGrid) {
+    if (gameMarqueeContent) {
         try {
-            // Clear static content first
-            gameLibraryGrid.innerHTML = '';
-
             // Display featured games (max 8)
             const featuredGames = games.filter(g => g.featured).slice(0, 8);
 
-            featuredGames.forEach(game => {
-                const item = createGameElement(game);
-                gameLibraryGrid.appendChild(item);
-            });
+            if (featuredGames.length > 0) {
+                // Triple the content for seamless infinite loop
+                const tripled = [...featuredGames, ...featuredGames, ...featuredGames];
+
+                gameMarqueeContent.innerHTML = tripled.map(game => {
+                    const tagsHtml = game.tags ? game.tags.map(tag => `<span>${tag}</span>`).join('') : '';
+                    return `
+                        <div class="game-item" data-game-id="${game.id}">
+                            <div class="game-img-wrapper"><img src="${game.img}" alt="${game.title}"></div>
+                            <div class="game-tags">${tagsHtml}</div>
+                            <div class="game-title-overlay">${game.title}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Add click listeners for modal
+                gameMarqueeContent.querySelectorAll('.game-item').forEach(item => {
+                    const gameId = parseInt(item.dataset.gameId);
+                    const game = games.find(g => g.id === gameId);
+                    if (game) {
+                        item.addEventListener('click', () => openModal(game));
+                    }
+                });
+            }
         } catch (e) {
-            console.error("Game Grid Population Failed:", e);
-            gameLibraryGrid.innerHTML = '<p style="color:white; text-align:center;">読み込みエラーが発生しました。</p>';
+            console.error("Game Marquee Population Failed:", e);
         }
     }
 
@@ -361,7 +393,7 @@ const init = () => {
         });
     }
 
-    // --- Touch Scroll for Gallery and Games ---
+    // --- Touch Scroll for Gallery and Games (with infinite loop) ---
     function addTouchScroll(wrapper, content) {
         if (!wrapper || !content) return;
 
@@ -371,6 +403,36 @@ const init = () => {
         let velocity = 0;
         let lastX = 0;
         let lastTime = Date.now();
+        let isResetting = false;
+
+        // Infinite scroll loop handler
+        const handleInfiniteScroll = () => {
+            if (isResetting) return;
+
+            const scrollWidth = wrapper.scrollWidth;
+            const clientWidth = wrapper.clientWidth;
+            const currentScroll = wrapper.scrollLeft;
+
+            // コンテンツは3倍になっているので、1/3の位置を基準にする
+            const oneThirdWidth = scrollWidth / 3;
+            const twoThirdWidth = (scrollWidth / 3) * 2;
+
+            // 右端（2/3を超えた）に到達した場合、中央（1/3）に戻す
+            if (currentScroll >= twoThirdWidth - clientWidth) {
+                isResetting = true;
+                wrapper.scrollLeft = currentScroll - oneThirdWidth;
+                setTimeout(() => { isResetting = false; }, 50);
+            }
+            // 左端（1/3より前）に到達した場合、中央（2/3）に移動
+            else if (currentScroll <= oneThirdWidth) {
+                isResetting = true;
+                wrapper.scrollLeft = currentScroll + oneThirdWidth;
+                setTimeout(() => { isResetting = false; }, 50);
+            }
+        };
+
+        // Scroll event listener for infinite loop
+        wrapper.addEventListener('scroll', handleInfiniteScroll);
 
         // Pause animation on touch
         wrapper.addEventListener('touchstart', (e) => {
@@ -452,6 +514,12 @@ const init = () => {
         wrapper.style.overflowX = 'auto';
         wrapper.style.scrollbarWidth = 'none'; // Firefox
         wrapper.style.msOverflowStyle = 'none'; // IE
+
+        // 初期スクロール位置を中央に設定（ループの開始点 = 1/3の位置から）
+        setTimeout(() => {
+            const oneThirdWidth = wrapper.scrollWidth / 3;
+            wrapper.scrollLeft = oneThirdWidth;
+        }, 100);
     }
 
     // Apply to gallery
@@ -464,16 +532,25 @@ const init = () => {
     const gameContent = document.querySelector('.game-marquee-content');
     addTouchScroll(gameWrapper, gameContent);
 
-    // --- Dynamic News from LocalStorage ---
-    function loadNews() {
+    // --- Dynamic News from Supabase or LocalStorage ---
+    async function loadNews() {
         const newsList = document.getElementById('news-list');
         if (!newsList) return;
 
-        const newsData = localStorage.getItem('flatspace_news');
-        const news = newsData ? JSON.parse(newsData) : [
-            { id: 1, title: "オープン記念キャンペーン", content: "オープン記念で入場料無料キャンペーン実施中！", date: "2024-01-15", important: true },
-            { id: 2, title: "営業時間のお知らせ", content: "平日12:00-22:00、土日祝11:00-23:00で営業しております。", date: "2024-01-10", important: false }
-        ];
+        // Try Supabase first
+        let news = null;
+        if (typeof getNewsDataFromDB !== 'undefined') {
+            news = await getNewsDataFromDB();
+        }
+
+        // Fallback to localStorage
+        if (!news) {
+            const newsData = localStorage.getItem('flatspace_news');
+            news = newsData ? JSON.parse(newsData) : [
+                { id: 1, title: "オープン記念キャンペーン", content: "オープン記念で入場料無料キャンペーン実施中！", date: "2024-01-15", important: true },
+                { id: 2, title: "営業時間のお知らせ", content: "平日12:00-22:00、土日祝11:00-23:00で営業しております。", date: "2024-01-10", important: false }
+            ];
+        }
 
         // Sort by date (newest first)
         news.sort((a, b) => new Date(b.date) - new Date(a.date));

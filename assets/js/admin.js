@@ -37,7 +37,7 @@ function login() {
         sessionStorage.setItem(STORAGE_KEYS.AUTH, 'true');
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('admin-dashboard').style.display = 'block';
-        initAdmin();
+        initAdmin(); // async function, but we don't await here to avoid top-level async
     } else {
         errorMsg.textContent = 'パスワードが正しくありません';
     }
@@ -51,7 +51,12 @@ function logout() {
 // =========================================
 // DATA MANAGEMENT
 // =========================================
-function getGalleryData() {
+async function getGalleryData() {
+    // Try Supabase first
+    const dbData = await getGalleryDataFromDB();
+    if (dbData) return dbData;
+
+    // Fallback to localStorage
     const data = localStorage.getItem(STORAGE_KEYS.GALLERY);
     return data ? JSON.parse(data) : [
         'assets/images/gallery_01.jpg',
@@ -62,11 +67,22 @@ function getGalleryData() {
     ];
 }
 
-function saveGalleryData(data) {
+async function saveGalleryData(data) {
+    // Save to Supabase
+    const success = await saveGalleryDataToDB(data);
+
+    // Always save to localStorage as backup
     localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(data));
+
+    return success;
 }
 
-function getGamesData() {
+async function getGamesData() {
+    // Try Supabase first
+    const dbData = await getGamesDataFromDB();
+    if (dbData) return dbData;
+
+    // Fallback to localStorage
     const data = localStorage.getItem(STORAGE_KEYS.GAMES);
     return data ? JSON.parse(data) : [
         { id: 1, title: "Catan", desc: "無人島を開拓する世界的ベストセラー。", img: "assets/images/game_catan.jpg", tags: ["#初心者歓迎", "#60分〜"], featured: true },
@@ -80,11 +96,22 @@ function getGamesData() {
     ];
 }
 
-function saveGamesData(data) {
+async function saveGamesData(data) {
+    // Save to Supabase
+    const success = await saveGamesDataToDB(data);
+
+    // Always save to localStorage as backup
     localStorage.setItem(STORAGE_KEYS.GAMES, JSON.stringify(data));
+
+    return success;
 }
 
-function getNewsData() {
+async function getNewsData() {
+    // Try Supabase first
+    const dbData = await getNewsDataFromDB();
+    if (dbData) return dbData;
+
+    // Fallback to localStorage
     const data = localStorage.getItem(STORAGE_KEYS.NEWS);
     return data ? JSON.parse(data) : [
         { id: 1, title: "オープン記念キャンペーン", content: "オープン記念で入場料無料キャンペーン実施中！", date: "2024-01-15", important: true },
@@ -92,60 +119,78 @@ function getNewsData() {
     ];
 }
 
-function saveNewsData(data) {
+async function saveNewsData(data) {
+    // Save to Supabase
+    const success = await saveNewsDataToDB(data);
+
+    // Always save to localStorage as backup
     localStorage.setItem(STORAGE_KEYS.NEWS, JSON.stringify(data));
+
+    return success;
 }
 
 // =========================================
 // GALLERY MANAGEMENT
 // =========================================
-function renderGallery() {
+async function renderGallery() {
     const list = document.getElementById('gallery-list');
-    const data = getGalleryData();
+    const data = await getGalleryData();
 
-    list.innerHTML = data.map((url, index) => `
+    list.innerHTML = data.map((url, index) => {
+        // Base64データの場合は短い名前を表示
+        const displayName = url.startsWith('data:image') ? `アップロード画像 ${index + 1}` : url;
+        return `
         <div class="gallery-item">
             <img src="${url}" alt="Gallery ${index + 1}" onerror="this.src='https://via.placeholder.com/300x200?text=Image+Error'">
             <div class="gallery-item-actions">
-                <button class="btn-danger btn-small" onclick="deleteGalleryItem(${index})">
+                <button class="btn-danger btn-small" data-index="${index}">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             </div>
-            <div class="gallery-item-url">${url}</div>
+            <div class="gallery-item-url">${displayName}</div>
         </div>
-    `).join('');
+    `;
+    }).join('');
+
+    // Add event listeners to delete buttons
+    list.querySelectorAll('.btn-danger').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const index = parseInt(this.dataset.index);
+            deleteGalleryItem(index);
+        });
+    });
 }
 
-function addGalleryItem() {
-    const url = document.getElementById('gallery-url').value.trim();
-    if (!url) {
-        alert('画像URLを入力してください');
+
+
+async function deleteGalleryItem(index) {
+    console.log('[DEBUG] deleteGalleryItem called with index:', index);
+
+    if (!confirm('この画像を削除しますか？')) {
+        console.log('[DEBUG] User cancelled deletion');
         return;
     }
 
-    const data = getGalleryData();
-    data.push(url);
-    saveGalleryData(data);
-    renderGallery();
-    closeModal('gallery-modal');
-    document.getElementById('gallery-url').value = '';
-}
+    console.log('[DEBUG] User confirmed deletion');
+    const data = await getGalleryData();
+    console.log('[DEBUG] Current gallery data:', data);
 
-function deleteGalleryItem(index) {
-    if (!confirm('この画像を削除しますか？')) return;
-
-    const data = getGalleryData();
     data.splice(index, 1);
-    saveGalleryData(data);
-    renderGallery();
+    await saveGalleryData(data);
+    console.log('[DEBUG] Gallery data after deletion:', data);
+
+    await renderGallery();
+    console.log('[DEBUG] Gallery re-rendered');
 }
 
 // =========================================
 // GAMES MANAGEMENT
 // =========================================
-function renderGames() {
+async function renderGames() {
     const list = document.getElementById('games-list');
-    const data = getGamesData();
+    const data = await getGamesData();
     const featuredCount = data.filter(g => g.featured).length;
 
     list.innerHTML = `
@@ -169,30 +214,55 @@ function renderGames() {
                 </div>
                 <div>
                     <label class="checkbox-label">
-                        <input type="checkbox" ${game.featured ? 'checked' : ''} 
-                               onchange="toggleFeatured(${game.id}, this.checked)"
+                        <input type="checkbox" class="game-featured-checkbox" data-game-id="${game.id}" ${game.featured ? 'checked' : ''} 
                                ${!game.featured && featuredCount >= 8 ? 'disabled' : ''}>
                     </label>
                 </div>
                 <div class="game-actions">
-                    <button class="btn-secondary btn-small" onclick="editGame(${game.id})">
+                    <button class="btn-secondary btn-small game-edit-btn" data-game-id="${game.id}">
                         <i class="fa-solid fa-edit"></i>
                     </button>
-                    <button class="btn-danger btn-small" onclick="deleteGame(${game.id})">
+                    <button class="btn-danger btn-small game-delete-btn" data-game-id="${game.id}">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
             </div>
         `).join('')}
     `;
+
+    // Add event listeners
+    list.querySelectorAll('.game-edit-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const gameId = parseInt(this.dataset.gameId);
+            editGame(gameId);
+        });
+    });
+
+    list.querySelectorAll('.game-delete-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const gameId = parseInt(this.dataset.gameId);
+            deleteGame(gameId);
+        });
+    });
+
+    list.querySelectorAll('.game-featured-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function (e) {
+            const gameId = parseInt(this.dataset.gameId);
+            toggleFeatured(gameId, this.checked);
+        });
+    });
 }
 
-function openGameModal(gameId = null) {
+async function openGameModal(gameId = null) {
     const modal = document.getElementById('game-modal');
     const title = document.getElementById('game-modal-title');
 
     if (gameId) {
-        const data = getGamesData();
+        const data = await getGamesData();
         const game = data.find(g => g.id === gameId);
         if (!game) return;
 
@@ -216,80 +286,65 @@ function openGameModal(gameId = null) {
     showModal(modal);
 }
 
-function saveGame() {
-    const title = document.getElementById('game-title').value.trim();
-    const desc = document.getElementById('game-desc').value.trim();
-    const img = document.getElementById('game-img').value.trim();
-    const tagsStr = document.getElementById('game-tags').value.trim();
-    const featured = document.getElementById('game-featured').checked;
 
-    if (!title || !desc || !img) {
-        alert('必須項目を入力してください');
-        return;
-    }
-
-    const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(t => t) : [];
-    const data = getGamesData();
-
-    if (currentEditingId) {
-        const game = data.find(g => g.id === currentEditingId);
-        if (game) {
-            game.title = title;
-            game.desc = desc;
-            game.img = img;
-            game.tags = tags;
-            game.featured = featured;
-        }
-    } else {
-        const newId = data.length > 0 ? Math.max(...data.map(g => g.id)) + 1 : 1;
-        data.push({ id: newId, title, desc, img, tags, featured });
-    }
-
-    saveGamesData(data);
-    renderGames();
-    closeModal('game-modal');
-}
 
 function editGame(id) {
     openGameModal(id);
 }
 
-function deleteGame(id) {
-    if (!confirm('このゲームを削除しますか？')) return;
+async function deleteGame(id) {
+    console.log('[DEBUG] deleteGame called with id:', id);
 
-    const data = getGamesData();
+    if (!confirm('このゲームを削除しますか？')) {
+        console.log('[DEBUG] User cancelled deletion');
+        return;
+    }
+
+    console.log('[DEBUG] User confirmed deletion');
+    const data = await getGamesData();
     const index = data.findIndex(g => g.id === id);
+    console.log('[DEBUG] Found game at index:', index);
+
     if (index !== -1) {
         data.splice(index, 1);
-        saveGamesData(data);
-        renderGames();
+        await saveGamesData(data);
+        console.log('[DEBUG] Games data after deletion:', data);
+        await renderGames();
+        console.log('[DEBUG] Games re-rendered');
+    } else {
+        console.warn('[DEBUG] Game not found with id:', id);
     }
 }
 
-function toggleFeatured(id, checked) {
-    const data = getGamesData();
+async function toggleFeatured(id, checked) {
+    const data = await getGamesData();
     const featuredCount = data.filter(g => g.featured).length;
 
     if (checked && featuredCount >= 8) {
         alert('ピックアップは最大8個までです');
-        renderGames();
+        await renderGames();
         return;
     }
 
     const game = data.find(g => g.id === id);
     if (game) {
-        game.featured = checked;
-        saveGamesData(data);
-        renderGames();
+        showLoading('ピックアップを更新中...');
+        try {
+            game.featured = checked;
+            await saveGamesData(data);
+            await renderGames();
+        } finally {
+            hideLoading();
+        }
     }
 }
 
 // =========================================
 // NEWS MANAGEMENT
 // =========================================
-function renderNews() {
+async function renderNews() {
     const list = document.getElementById('news-list');
-    const data = getNewsData();
+    const data = await getNewsData();
 
     list.innerHTML = `
         <div class="news-row header">
@@ -310,24 +365,43 @@ function renderNews() {
                     </span>
                 </div>
                 <div class="game-actions">
-                    <button class="btn-secondary btn-small" onclick="editNews(${news.id})">
+                    <button class="btn-secondary btn-small news-edit-btn" data-news-id="${news.id}">
                         <i class="fa-solid fa-edit"></i>
                     </button>
-                    <button class="btn-danger btn-small" onclick="deleteNews(${news.id})">
+                    <button class="btn-danger btn-small news-delete-btn" data-news-id="${news.id}">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
             </div>
         `).join('')}
     `;
+
+    // Add event listeners
+    list.querySelectorAll('.news-edit-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const newsId = parseInt(this.dataset.newsId);
+            editNews(newsId);
+        });
+    });
+
+    list.querySelectorAll('.news-delete-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const newsId = parseInt(this.dataset.newsId);
+            deleteNews(newsId);
+        });
+    });
 }
 
-function openNewsModal(newsId = null) {
+async function openNewsModal(newsId = null) {
     const modal = document.getElementById('news-modal');
     const title = document.getElementById('news-modal-title');
 
     if (newsId) {
-        const data = getNewsData();
+        const data = await getNewsData();
         const news = data.find(n => n.id === newsId);
         if (!news) return;
 
@@ -349,7 +423,7 @@ function openNewsModal(newsId = null) {
     showModal(modal);
 }
 
-function saveNews() {
+async function saveNews() {
     const title = document.getElementById('news-title').value.trim();
     const content = document.getElementById('news-content').value.trim();
     const date = document.getElementById('news-date').value;
@@ -360,39 +434,56 @@ function saveNews() {
         return;
     }
 
-    const data = getNewsData();
+    showLoading('お知らせを保存中...');
+    try {
+        const data = await getNewsData();
 
-    if (currentEditingId) {
-        const news = data.find(n => n.id === currentEditingId);
-        if (news) {
-            news.title = title;
-            news.content = content;
-            news.date = date;
-            news.important = important;
+        if (currentEditingId) {
+            const news = data.find(n => n.id === currentEditingId);
+            if (news) {
+                news.title = title;
+                news.content = content;
+                news.date = date;
+                news.important = important;
+            }
+        } else {
+            const newId = data.length > 0 ? Math.max(...data.map(n => n.id)) + 1 : 1;
+            data.push({ id: newId, title, content, date, important });
         }
-    } else {
-        const newId = data.length > 0 ? Math.max(...data.map(n => n.id)) + 1 : 1;
-        data.push({ id: newId, title, content, date, important });
-    }
 
-    saveNewsData(data);
-    renderNews();
-    closeModal('news-modal');
+        await saveNewsData(data);
+        await renderNews();
+        closeModal('news-modal');
+    } finally {
+        hideLoading();
+    }
 }
 
 function editNews(id) {
     openNewsModal(id);
 }
 
-function deleteNews(id) {
-    if (!confirm('このお知らせを削除しますか？')) return;
+async function deleteNews(id) {
+    console.log('[DEBUG] deleteNews called with id:', id);
 
-    const data = getNewsData();
+    if (!confirm('このお知らせを削除しますか？')) {
+        console.log('[DEBUG] User cancelled deletion');
+        return;
+    }
+
+    console.log('[DEBUG] User confirmed deletion');
+    const data = await getNewsData();
     const index = data.findIndex(n => n.id === id);
+    console.log('[DEBUG] Found news at index:', index);
+
     if (index !== -1) {
         data.splice(index, 1);
-        saveNewsData(data);
-        renderNews();
+        await saveNewsData(data);
+        console.log('[DEBUG] News data after deletion:', data);
+        await renderNews();
+        console.log('[DEBUG] News re-rendered');
+    } else {
+        console.warn('[DEBUG] News not found with id:', id);
     }
 }
 
@@ -420,21 +511,21 @@ function importData() {
     document.getElementById('import-file-input').click();
 }
 
-function handleImportFile(event) {
+async function handleImportFile(event) {
     const file = event.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
         try {
             const data = JSON.parse(e.target.result);
 
-            if (data.gallery) saveGalleryData(data.gallery);
-            if (data.games) saveGamesData(data.games);
-            if (data.news) saveNewsData(data.news);
+            if (data.gallery) await saveGalleryData(data.gallery);
+            if (data.games) await saveGamesData(data.games);
+            if (data.news) await saveNewsData(data.news);
 
             alert('データを正常にインポートしました');
-            renderAll();
+            await renderAll();
         } catch (error) {
             alert('エラー: ' + error.message);
         }
@@ -445,6 +536,18 @@ function handleImportFile(event) {
 // =========================================
 // UI HELPERS
 // =========================================
+function showLoading(text = '保存中...') {
+    const overlay = document.getElementById('loading-overlay');
+    const loadingText = document.getElementById('loading-text');
+    loadingText.textContent = text;
+    overlay.classList.add('show');
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    overlay.classList.remove('show');
+}
+
 function showModal(modal) {
     modal.style.display = 'flex';
     setTimeout(() => modal.classList.add('show'), 10);
@@ -474,17 +577,17 @@ function switchTab(tabName) {
     currentTab = tabName;
 }
 
-function renderAll() {
-    renderGallery();
-    renderGames();
-    renderNews();
+async function renderAll() {
+    await renderGallery();
+    await renderGames();
+    await renderNews();
 }
 
 // =========================================
 // INITIALIZATION
 // =========================================
-function initAdmin() {
-    renderAll();
+async function initAdmin() {
+    await renderAll();
 
     // Event listeners - Tab switching
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -752,7 +855,7 @@ function confirmCrop() {
 }
 
 // Update Gallery Save Function
-function addGalleryItem() {
+async function addGalleryItem() {
     let url = document.getElementById('gallery-url').value.trim();
 
     // Check if it's an uploaded image
@@ -765,20 +868,25 @@ function addGalleryItem() {
         return;
     }
 
-    const data = getGalleryData();
-    data.push(url);
-    saveGalleryData(data);
-    renderGallery();
-    closeModal('gallery-modal');
+    showLoading('画像を保存中...');
+    try {
+        const data = await getGalleryData();
+        data.push(url);
+        await saveGalleryData(data);
+        await renderGallery();
+        closeModal('gallery-modal');
 
-    // Reset
-    document.getElementById('gallery-url').value = '';
-    currentUploadedImage = null;
-    document.getElementById('gallery-preview').innerHTML = '';
+        // Reset
+        document.getElementById('gallery-url').value = '';
+        currentUploadedImage = null;
+        document.getElementById('gallery-preview').innerHTML = '';
+    } finally {
+        hideLoading();
+    }
 }
 
 // Update Game Save Function
-function saveGame() {
+async function saveGame() {
     const title = document.getElementById('game-title').value.trim();
     const desc = document.getElementById('game-desc').value.trim();
     let img = document.getElementById('game-img').value.trim();
@@ -795,30 +903,35 @@ function saveGame() {
         return;
     }
 
-    const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(t => t) : [];
-    const data = getGamesData();
+    showLoading('ゲーム情報を保存中...');
+    try {
+        const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(t => t) : [];
+        const data = await getGamesData();
 
-    if (currentEditingId) {
-        const game = data.find(g => g.id === currentEditingId);
-        if (game) {
-            game.title = title;
-            game.desc = desc;
-            game.img = img;
-            game.tags = tags;
-            game.featured = featured;
+        if (currentEditingId) {
+            const game = data.find(g => g.id === currentEditingId);
+            if (game) {
+                game.title = title;
+                game.desc = desc;
+                game.img = img;
+                game.tags = tags;
+                game.featured = featured;
+            }
+        } else {
+            const newId = data.length > 0 ? Math.max(...data.map(g => g.id)) + 1 : 1;
+            data.push({ id: newId, title, desc, img, tags, featured });
         }
-    } else {
-        const newId = data.length > 0 ? Math.max(...data.map(g => g.id)) + 1 : 1;
-        data.push({ id: newId, title, desc, img, tags, featured });
+
+        await saveGamesData(data);
+        await renderGames();
+        closeModal('game-modal');
+
+        // Reset
+        currentUploadedImage = null;
+        document.getElementById('game-preview').innerHTML = '';
+    } finally {
+        hideLoading();
     }
-
-    saveGamesData(data);
-    renderGames();
-    closeModal('game-modal');
-
-    // Reset
-    currentUploadedImage = null;
-    document.getElementById('game-preview').innerHTML = '';
 }
 
 // Setup Upload Event Listeners
