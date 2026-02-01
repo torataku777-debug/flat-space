@@ -149,14 +149,14 @@ const init = async () => {
         // Fallback to localStorage
         const data = localStorage.getItem('flatspace_games');
         return data ? JSON.parse(data) : [
-            { id: 1, title: "Catan", desc: "無人島を開拓する世界的ベストセラー。", img: "assets/images/game_catan.jpg", tags: ["#初心者歓迎", "#60分〜"], featured: true },
-            { id: 2, title: "Dominion", desc: "自分だけのデッキを構築するカードゲーム。", img: "assets/images/game_dominion.jpg", tags: ["#戦略", "#30分〜"], featured: true },
-            { id: 3, title: "Blokus", desc: "テトリスのようなピースを角で繋げる陣取りゲーム。", img: "assets/images/game_blokus.jpg", tags: ["#パズル", "#20分〜"], featured: true },
-            { id: 4, title: "Geister", desc: "良いオバケと悪いオバケを取り合う心理戦。", img: "assets/images/game_geister.jpg", tags: ["#心理戦", "#15分〜"], featured: true },
-            { id: 5, title: "Ito", desc: "数字を言葉で例えて協力するパーティーゲーム。", img: "assets/images/game_sample.png", tags: ["#盛り上がる", "#20分〜"], featured: true },
-            { id: 6, title: "Splendor", desc: "宝石商となり威信ポイントを稼ぐ戦略ゲーム。", img: "assets/images/game_sample.png", tags: ["#買い物", "#30分〜"], featured: true },
-            { id: 7, title: "Dixit", desc: "抽象的な絵柄から親の想像を当てるゲーム。", img: "assets/images/game_sample.png", tags: ["#想像力", "#30分〜"], featured: true },
-            { id: 8, title: "Skull", desc: "嘘と度胸の心理戦ブラフゲーム。", img: "assets/images/game_sample.png", tags: ["#心理戦", "#15分〜"], featured: true }
+            { id: 1, title: "Catan", desc: "無人島を開拓する世界的ベストセラー。", img: "assets/images/game_catan.jpg", tags: ["#初心者歓迎", "#60分〜"], featured: true, players: "3-4人", playtime: "60-90分", youtubeUrl: "https://www.youtube.com/watch?v=TN8vjBQnPQk" },
+            { id: 2, title: "Dominion", desc: "自分だけのデッキを構築するカードゲーム。", img: "assets/images/game_dominion.jpg", tags: ["#戦略", "#30分〜"], featured: true, players: "2-4人", playtime: "30分" },
+            { id: 3, title: "Blokus", desc: "テトリスのようなピースを角で繋げる陣取りゲーム。", img: "assets/images/game_blokus.jpg", tags: ["#パズル", "#20分〜"], featured: true, players: "2-4人", playtime: "20-30分" },
+            { id: 4, title: "Geister", desc: "良いオバケと悪いオバケを取り合う心理戦。", img: "assets/images/game_geister.jpg", tags: ["#心理戦", "#15分〜"], featured: true, players: "2人", playtime: "15分" },
+            { id: 5, title: "Ito", desc: "数字を言葉で例えて協力するパーティーゲーム。", img: "assets/images/game_sample.png", tags: ["#盛り上がる", "#20分〜"], featured: true, players: "2-10人", playtime: "20分" },
+            { id: 6, title: "Splendor", desc: "宝石商となり威信ポイントを稼ぐ戦略ゲーム。", img: "assets/images/game_sample.png", tags: ["#買い物", "#30分〜"], featured: true, players: "2-4人", playtime: "30分" },
+            { id: 7, title: "Dixit", desc: "抽象的な絵柄から親の想像を当てるゲーム。", img: "assets/images/game_sample.png", tags: ["#想像力", "#30分〜"], featured: true, players: "3-6人", playtime: "30分" },
+            { id: 8, title: "Skull", desc: "嘘と度胸の心理戦ブラフゲーム。", img: "assets/images/game_sample.png", tags: ["#心理戦", "#15分〜"], featured: true, players: "3-6人", playtime: "15-30分" }
         ];
     }
 
