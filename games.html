@@ -506,34 +506,72 @@
             margin-top: 15px;
         }
 
-        /* Game Library */
+        /* Game Library - Bookshelf Style */
         .bookshelf-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .bookshelf-row {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            padding: 30px 40px 0;
+            background: linear-gradient(to bottom,
+                    transparent 0%,
+                    rgba(139, 90, 43, 0.08) 80%,
+                    rgba(139, 90, 43, 0.15) 100%);
+            position: relative;
+        }
+
+        .bookshelf-row::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 15px;
+            background: linear-gradient(to bottom,
+                    #c4a574 0%,
+                    #a67c4e 50%,
+                    #8b5a2b 100%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 0 0 4px 4px;
         }
 
         .game-item {
             position: relative;
             cursor: pointer;
-            perspective: 1000px;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
+            width: 140px;
+            flex-shrink: 0;
+            margin-bottom: 15px;
+        }
+
+        .game-item:hover {
+            transform: translateY(-8px) scale(1.05);
+            z-index: 10;
         }
 
         .game-img-wrapper {
             width: 100%;
             aspect-ratio: 1 / 1;
-            border-radius: var(--card-radius);
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.15),
+                2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
             background: #fff;
-            transform-style: preserve-3d;
         }
 
         .game-item:hover .game-img-wrapper {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, 0.25),
+                0 5px 15px rgba(0, 0, 0, 0.15);
         }
 
         .game-item img {
@@ -543,25 +581,57 @@
         }
 
         .game-tags {
-            margin-top: 15px;
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
+            gap: 4px;
+            justify-content: flex-start;
+            z-index: 2;
         }
 
         .game-tags span {
-            font-size: 0.7rem;
-            background: #fff;
-            padding: 4px 10px;
-            border-radius: 20px;
-            color: #666;
-            border:
-                1px solid #eee;
+            font-size: 0.65rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 8px;
+            border-radius: 10px;
+            color: #555;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .game-title-overlay {
-            display: none;
+            display: block;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #444;
+            margin-top: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @media (max-width: 768px) {
+            .bookshelf-row {
+                gap: 15px;
+                padding: 20px 20px 0;
+                flex-wrap: wrap;
+            }
+
+            .game-item {
+                width: 110px;
+            }
+
+            .game-tags span {
+                font-size: 0.55rem;
+                padding: 1px 5px;
+            }
+
+            .game-title-overlay {
+                font-size: 0.65rem;
+            }
         }
 
         /* Modal */

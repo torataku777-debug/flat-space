@@ -193,11 +193,21 @@ const init = async () => {
         return item;
     }
 
-    // Populate Games Page (Full Grid)
+    // Populate Games Page (Full Grid - Bookshelf Style)
     if (gameGridFull) {
-        games.forEach(game => {
-            gameGridFull.appendChild(createGameElement(game));
-        });
+        // Group games into rows of 5 for bookshelf layout
+        const gamesPerRow = 5;
+        for (let i = 0; i < games.length; i += gamesPerRow) {
+            const rowGames = games.slice(i, i + gamesPerRow);
+            const row = document.createElement('div');
+            row.classList.add('bookshelf-row');
+
+            rowGames.forEach(game => {
+                row.appendChild(createGameElement(game));
+            });
+
+            gameGridFull.appendChild(row);
+        }
     }
 
     // Populate Home Page (Featured games only - in marquee)
