@@ -198,7 +198,7 @@ async function renderGames() {
         <div class="game-row header">
             <div>画像</div>
             <div>タイトル</div>
-            <div>説明</div>
+            <div>キャッチコピー</div>
             <div>タグ</div>
             <div>ピックアップ (${featuredCount}/8)</div>
             <div>操作</div>
