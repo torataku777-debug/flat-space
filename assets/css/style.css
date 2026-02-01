@@ -1305,4 +1305,42 @@ footer {
     .hero-bg-single {
         background-attachment: scroll;
     }
+
+    /* Mobile Modal Scroll */
+    .modal {
+        padding: 15px;
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+
+    .modal-content {
+        padding: 25px;
+        max-height: calc(100vh - 30px);
+        overflow-y: auto;
+        margin: 15px 0;
+    }
+
+    .modal-body {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .modal-img-container {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .modal-img-container img {
+        max-height: 250px;
+        object-fit: contain;
+    }
+
+    .modal-text {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .modal-text h3 {
+        font-size: 1.5rem;
+    }
 }
