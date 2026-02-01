@@ -614,17 +614,35 @@
         }
 
         @media (max-width: 768px) {
-            .bookshelf-row {
+            .bookshelf-grid {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-                padding: 15px 10px 0;
-                justify-items: center;
+                gap: 8px 10px;
+                padding: 0 10px;
+                background: linear-gradient(to bottom,
+                        transparent 0%,
+                        transparent calc(100% - 12px),
+                        #c4a574 calc(100% - 12px),
+                        #8b5a2b 100%);
+                background-size: 100% calc(33.33vw + 40px);
+            }
+
+            .bookshelf-row {
+                display: contents;
+            }
+
+            .bookshelf-row::after {
+                display: none;
             }
 
             .game-item {
                 width: 100%;
-                max-width: 105px;
+                max-width: none;
+                padding-bottom: 12px;
+            }
+
+            .game-img-wrapper {
+                aspect-ratio: 1 / 1;
             }
 
             .game-tags {
