@@ -270,6 +270,7 @@ async function openGameModal(gameId = null) {
         title.textContent = 'ゲームを編集';
         document.getElementById('game-title').value = game.title;
         document.getElementById('game-desc').value = game.desc;
+        document.getElementById('game-overview').value = game.overview || ''; // New field
         document.getElementById('game-img').value = game.img;
         document.getElementById('game-tags').value = game.tags.join(',');
         document.getElementById('game-featured').checked = game.featured;
@@ -281,6 +282,7 @@ async function openGameModal(gameId = null) {
         title.textContent = 'ゲームを追加';
         document.getElementById('game-title').value = '';
         document.getElementById('game-desc').value = '';
+        document.getElementById('game-overview').value = ''; // New field
         document.getElementById('game-img').value = '';
         document.getElementById('game-tags').value = '';
         document.getElementById('game-featured').checked = false;
@@ -934,8 +936,9 @@ async function addGalleryItem() {
 async function saveGame() {
     const title = document.getElementById('game-title').value.trim();
     const desc = document.getElementById('game-desc').value.trim();
+    const overview = document.getElementById('game-overview').value.trim(); // New field
     let img = document.getElementById('game-img').value.trim();
-    const tagsStr = document.getElementById('game-tags').value.trim();
+    const tags = document.getElementById('game-tags').value.split(',').map(t => t.trim()).filter(t => t);
     const featured = document.getElementById('game-featured').checked;
     const players = document.getElementById('game-players').value.trim();
     const playtime = document.getElementById('game-playtime').value.trim();
@@ -953,7 +956,6 @@ async function saveGame() {
 
     showLoading('ゲーム情報を保存中...');
     try {
-        const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(t => t) : [];
         const data = await getGamesData();
 
         if (currentEditingId) {
@@ -961,6 +963,7 @@ async function saveGame() {
             if (game) {
                 game.title = title;
                 game.desc = desc;
+                game.overview = overview; // New field
                 game.img = img;
                 game.tags = tags;
                 game.featured = featured;
@@ -970,7 +973,7 @@ async function saveGame() {
             }
         } else {
             const newId = data.length > 0 ? Math.max(...data.map(g => g.id)) + 1 : 1;
-            data.push({ id: newId, title, desc, img, tags, featured, players, playtime, youtubeUrl });
+            data.push({ id: newId, title, desc, overview, img, tags, featured, players, playtime, youtubeUrl });
         }
 
         await saveGamesData(data);

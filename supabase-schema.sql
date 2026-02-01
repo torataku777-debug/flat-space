@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS games (
     players TEXT,              -- 対応人数 (例: "2-4人")
     playtime TEXT,             -- 所要時間 (例: "30分〜")
     youtube_url TEXT,          -- ルール説明動画のURL
+    overview TEXT,             -- ゲーム概要（詳細な説明）
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -29,6 +30,7 @@ CREATE TABLE IF NOT EXISTS games (
 ALTER TABLE games ADD COLUMN IF NOT EXISTS players TEXT;
 ALTER TABLE games ADD COLUMN IF NOT EXISTS playtime TEXT;
 ALTER TABLE games ADD COLUMN IF NOT EXISTS youtube_url TEXT;
+ALTER TABLE games ADD COLUMN IF NOT EXISTS overview TEXT;
 
 -- 3. News テーブル
 CREATE TABLE IF NOT EXISTS news (

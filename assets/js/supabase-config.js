@@ -99,6 +99,7 @@ async function getGamesDataFromDB() {
             id: game.id,
             title: game.title,
             desc: game.description,  // description -> desc
+            overview: game.overview || '', // New field
             img: game.image_url,     // image_url -> img
             tags: game.tags || [],
             featured: game.featured,
@@ -124,6 +125,7 @@ async function saveGamesDataToDB(games) {
             id: game.id,
             title: game.title,
             description: game.desc,   // desc -> description
+            overview: game.overview || null, // New field
             image_url: game.img,      // img -> image_url
             tags: game.tags || [],
             featured: game.featured,
