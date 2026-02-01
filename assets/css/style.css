@@ -404,30 +404,52 @@ header.scrolled {
 .section-title {
     text-align: center;
     font-family: var(--font-heading);
-    font-size: 3.5rem;
-    color: var(--primary-color);
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--text-color);
     margin-bottom: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    margin-top: 20px;
+    border-radius: 2px;
 }
 
 .section-title .jp-title {
     font-family: var(--font-body);
-    font-size: 1rem;
-    color: #888;
-    margin-top: 15px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    margin-top: 25px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: none;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .section-desc {
     text-align: center;
     margin-bottom: 60px;
-    font-size: 1.1rem;
-    color: #666;
+    font-size: 1.15rem;
+    color: #555;
+    font-weight: 400;
+    line-height: 1.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Featured Badge */
@@ -733,40 +755,63 @@ header.scrolled {
 
 .badge {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: var(--primary-color);
+    top: -10px;
+    right: -10px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
     color: #fff;
-    padding: 5px 15px;
-    border-radius: 20px;
+    padding: 8px 18px;
+    border-radius: 25px;
     font-weight: bold;
-    font-size: 0.8rem;
-    box-shadow: 0 4px 10px rgba(230, 149, 0, 0.3);
+    font-size: 0.75rem;
+    box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    animation: badge-pulse 3s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 6px 25px rgba(238, 90, 36, 0.6);
+    }
 }
 
 .card-icon {
-    font-size: 3rem;
+    font-size: 3.5rem;
     margin-bottom: 30px;
-    color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .card h3 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin-bottom: 20px;
-    font-weight: 700;
+    font-weight: 800;
+    letter-spacing: 0.02em;
 }
 
 .price .amount {
     font-family: var(--font-heading);
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: var(--text-color);
+    font-size: 3.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary-color), #d4940c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .price .unit {
-    font-size: 0.9rem;
-    color: #999;
-    margin-left: 5px;
+    font-size: 0.85rem;
+    color: #888;
+    margin-left: 8px;
+    font-weight: 500;
 }
 
 .note {
