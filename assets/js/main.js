@@ -253,6 +253,66 @@ const init = async () => {
         modalImg.src = game.img;
         modalTitle.textContent = game.title;
         modalDesc.textContent = game.desc;
+
+        // Display players and playtime
+        const modalMeta = document.getElementById('modal-meta');
+        const modalPlayers = document.getElementById('modal-players');
+        const modalPlaytime = document.getElementById('modal-playtime');
+
+        if (game.players) {
+            modalPlayers.innerHTML = `<i class="fas fa-users"></i> ${game.players}`;
+            modalPlayers.style.display = 'flex';
+        } else {
+            modalPlayers.style.display = 'none';
+        }
+
+        if (game.playtime) {
+            modalPlaytime.innerHTML = `<i class="fas fa-clock"></i> ${game.playtime}`;
+            modalPlaytime.style.display = 'flex';
+        } else {
+            modalPlaytime.style.display = 'none';
+        }
+
+        // Hide meta container if both are empty
+        if (!game.players && !game.playtime) {
+            modalMeta.style.display = 'none';
+        } else {
+            modalMeta.style.display = 'flex';
+        }
+
+        // Display tags
+        const modalTags = document.getElementById('modal-tags');
+        if (game.tags && game.tags.length > 0) {
+            modalTags.innerHTML = game.tags.map(tag => `<span>${tag}</span>`).join('');
+            modalTags.style.display = 'flex';
+        } else {
+            modalTags.style.display = 'none';
+        }
+
+        // Display YouTube video
+        const videoContainer = document.getElementById('modal-video-container');
+        const videoIframe = document.getElementById('modal-video');
+
+        if (game.youtubeUrl) {
+            // Convert YouTube URL to embed URL
+            let embedUrl = '';
+            const youtubeRegex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/;
+            const match = game.youtubeUrl.match(youtubeRegex);
+            if (match) {
+                embedUrl = `https://www.youtube.com/embed/${match[1]}`;
+            }
+
+            if (embedUrl) {
+                videoIframe.src = embedUrl;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+        } else {
+            videoContainer.style.display = 'none';
+            videoIframe.src = '';
+        }
+
         modal.style.display = 'flex';
         // Small delay to allow display flex to apply before opacity transition
         setTimeout(() => {
@@ -263,6 +323,11 @@ const init = async () => {
     function hideModal() {
         if (!modal) return;
         modal.classList.remove('show');
+        // Stop video when closing modal
+        const videoIframe = document.getElementById('modal-video');
+        if (videoIframe) {
+            videoIframe.src = '';
+        }
         setTimeout(() => {
             modal.style.display = 'none';
         }, 300);

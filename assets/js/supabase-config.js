@@ -101,7 +101,10 @@ async function getGamesDataFromDB() {
             desc: game.description,  // description -> desc
             img: game.image_url,     // image_url -> img
             tags: game.tags || [],
-            featured: game.featured
+            featured: game.featured,
+            players: game.players || '',
+            playtime: game.playtime || '',
+            youtubeUrl: game.youtube_url || ''  // youtube_url -> youtubeUrl
         }));
     } catch (error) {
         console.error('Error fetching games data:', error);
@@ -123,7 +126,10 @@ async function saveGamesDataToDB(games) {
             description: game.desc,   // desc -> description
             image_url: game.img,      // img -> image_url
             tags: game.tags || [],
-            featured: game.featured
+            featured: game.featured,
+            players: game.players || null,
+            playtime: game.playtime || null,
+            youtube_url: game.youtubeUrl || null  // youtubeUrl -> youtube_url
         }));
 
         const { error } = await supabaseClient.from('games').insert(records);

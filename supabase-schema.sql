@@ -19,8 +19,16 @@ CREATE TABLE IF NOT EXISTS games (
     image_url TEXT NOT NULL,
     tags TEXT[] DEFAULT '{}',
     featured BOOLEAN DEFAULT false,
+    players TEXT,              -- 対応人数 (例: "2-4人")
+    playtime TEXT,             -- 所要時間 (例: "30分〜")
+    youtube_url TEXT,          -- ルール説明動画のURL
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- 既存テーブルへのカラム追加（既にテーブルがある場合）
+ALTER TABLE games ADD COLUMN IF NOT EXISTS players TEXT;
+ALTER TABLE games ADD COLUMN IF NOT EXISTS playtime TEXT;
+ALTER TABLE games ADD COLUMN IF NOT EXISTS youtube_url TEXT;
 
 -- 3. News テーブル
 CREATE TABLE IF NOT EXISTS news (

@@ -501,6 +501,15 @@ body {
     margin-bottom: 20px;
 }
 
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-group.half {
+    flex: 1;
+}
+
 .form-group label {
     display: block;
     margin-bottom: 8px;

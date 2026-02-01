@@ -273,6 +273,9 @@ async function openGameModal(gameId = null) {
         document.getElementById('game-img').value = game.img;
         document.getElementById('game-tags').value = game.tags.join(',');
         document.getElementById('game-featured').checked = game.featured;
+        document.getElementById('game-players').value = game.players || '';
+        document.getElementById('game-playtime').value = game.playtime || '';
+        document.getElementById('game-youtube').value = game.youtubeUrl || '';
         currentEditingId = gameId;
     } else {
         title.textContent = 'ゲームを追加';
@@ -281,6 +284,9 @@ async function openGameModal(gameId = null) {
         document.getElementById('game-img').value = '';
         document.getElementById('game-tags').value = '';
         document.getElementById('game-featured').checked = false;
+        document.getElementById('game-players').value = '';
+        document.getElementById('game-playtime').value = '';
+        document.getElementById('game-youtube').value = '';
         currentEditingId = null;
     }
 
@@ -931,6 +937,9 @@ async function saveGame() {
     let img = document.getElementById('game-img').value.trim();
     const tagsStr = document.getElementById('game-tags').value.trim();
     const featured = document.getElementById('game-featured').checked;
+    const players = document.getElementById('game-players').value.trim();
+    const playtime = document.getElementById('game-playtime').value.trim();
+    const youtubeUrl = document.getElementById('game-youtube').value.trim();
 
     // Check if it's an uploaded image
     if (img === '[アップロード画像]' && currentUploadedImage) {
@@ -955,10 +964,13 @@ async function saveGame() {
                 game.img = img;
                 game.tags = tags;
                 game.featured = featured;
+                game.players = players;
+                game.playtime = playtime;
+                game.youtubeUrl = youtubeUrl;
             }
         } else {
             const newId = data.length > 0 ? Math.max(...data.map(g => g.id)) + 1 : 1;
-            data.push({ id: newId, title, desc, img, tags, featured });
+            data.push({ id: newId, title, desc, img, tags, featured, players, playtime, youtubeUrl });
         }
 
         await saveGamesData(data);
