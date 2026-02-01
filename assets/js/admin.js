@@ -168,7 +168,8 @@ async function renderGallery() {
 async function deleteGalleryItem(index) {
     console.log('[DEBUG] deleteGalleryItem called with index:', index);
 
-    if (!confirm('この画像を削除しますか？')) {
+    const confirmed = await showConfirm('この画像を削除しますか？', '削除の確認');
+    if (!confirmed) {
         console.log('[DEBUG] User cancelled deletion');
         return;
     }
@@ -295,7 +296,8 @@ function editGame(id) {
 async function deleteGame(id) {
     console.log('[DEBUG] deleteGame called with id:', id);
 
-    if (!confirm('このゲームを削除しますか？')) {
+    const confirmed = await showConfirm('このゲームを削除しますか？', '削除の確認');
+    if (!confirmed) {
         console.log('[DEBUG] User cancelled deletion');
         return;
     }
@@ -466,7 +468,8 @@ function editNews(id) {
 async function deleteNews(id) {
     console.log('[DEBUG] deleteNews called with id:', id);
 
-    if (!confirm('このお知らせを削除しますか？')) {
+    const confirmed = await showConfirm('このお知らせを削除しますか？', '削除の確認');
+    if (!confirmed) {
         console.log('[DEBUG] User cancelled deletion');
         return;
     }
@@ -546,6 +549,42 @@ function showLoading(text = '保存中...') {
 function hideLoading() {
     const overlay = document.getElementById('loading-overlay');
     overlay.classList.remove('show');
+}
+
+// Custom Confirm Dialog
+function showConfirm(message, title = '確認') {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('confirm-modal');
+        const titleEl = document.getElementById('confirm-title');
+        const messageEl = document.getElementById('confirm-message');
+        const yesBtn = document.getElementById('confirm-yes-btn');
+        const noBtn = document.getElementById('confirm-no-btn');
+
+        titleEl.textContent = title;
+        messageEl.textContent = message;
+
+        // Remove old listeners
+        const newYesBtn = yesBtn.cloneNode(true);
+        const newNoBtn = noBtn.cloneNode(true);
+        yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+        noBtn.parentNode.replaceChild(newNoBtn, noBtn);
+
+        // Add new listeners
+        newYesBtn.addEventListener('click', () => {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+            resolve(true);
+        });
+
+        newNoBtn.addEventListener('click', () => {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+            resolve(false);
+        });
+
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('show'), 10);
+    });
 }
 
 function showModal(modal) {

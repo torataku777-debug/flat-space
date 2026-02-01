@@ -264,6 +264,18 @@
     <!-- Hidden file input for import -->
     <input type="file" id="import-file-input" accept=".json" style="display: none;">
 
+    <!-- Confirm Modal -->
+    <div id="confirm-modal" class="modal confirm-modal">
+        <div class="modal-content modal-small">
+            <h3 id="confirm-title">確認</h3>
+            <p id="confirm-message">この操作を実行しますか？</p>
+            <div class="modal-actions confirm-actions">
+                <button id="confirm-yes-btn" class="btn-danger">はい、削除する</button>
+                <button id="confirm-no-btn" class="btn-secondary">キャンセル</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Loading Overlay -->
     <div id="loading-overlay" class="loading-overlay">
         <div class="loading-spinner">
