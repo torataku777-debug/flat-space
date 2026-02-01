@@ -149,7 +149,7 @@ const init = async () => {
         // Fallback to localStorage
         const data = localStorage.getItem('flatspace_games');
         return data ? JSON.parse(data) : [
-            { id: 1, title: "Catan", desc: "無人島を開拓する世界的ベストセラー。", img: "assets/images/game_catan.jpg", tags: ["#初心者歓迎", "#60分〜"], featured: true, players: "3-4人", playtime: "60-90分", youtubeUrl: "https://www.youtube.com/watch?v=TN8vjBQnPQk" },
+            { id: 1, title: "Catan", desc: "無人島を開拓する世界的ベストセラー。", img: "assets/images/game_catan.jpg", tags: ["#初心者歓迎", "#60分〜"], featured: true, players: "3-4人", playtime: "60-90分", youtubeUrl: "https://www.youtube.com/watch?v=TN8vjBQnPQk", overview: "ボドゲの面白さの全てがここにある。資源を巡る「交渉」が戦略を熱くし、ダイス一投がドラマを生む。島を開拓するワクワクと、相手を出し抜く心理戦。一度遊べば誰もが虜になる、世界で最も愛される伝説の傑作です。" },
             { id: 2, title: "Dominion", desc: "自分だけのデッキを構築するカードゲーム。", img: "assets/images/game_dominion.jpg", tags: ["#戦略", "#30分〜"], featured: true, players: "2-4人", playtime: "30分" },
             { id: 3, title: "Blokus", desc: "テトリスのようなピースを角で繋げる陣取りゲーム。", img: "assets/images/game_blokus.jpg", tags: ["#パズル", "#20分〜"], featured: true, players: "2-4人", playtime: "20-30分" },
             { id: 4, title: "Geister", desc: "良いオバケと悪いオバケを取り合う心理戦。", img: "assets/images/game_geister.jpg", tags: ["#心理戦", "#15分〜"], featured: true, players: "2人", playtime: "15分" },
@@ -311,6 +311,17 @@ const init = async () => {
         } else {
             videoContainer.style.display = 'none';
             videoIframe.src = '';
+        }
+
+        // Display game overview
+        const overviewContainer = document.getElementById('modal-overview-container');
+        const overviewText = document.getElementById('modal-overview');
+
+        if (game.overview && overviewContainer && overviewText) {
+            overviewText.textContent = game.overview;
+            overviewContainer.style.display = 'block';
+        } else if (overviewContainer) {
+            overviewContainer.style.display = 'none';
         }
 
         modal.style.display = 'flex';

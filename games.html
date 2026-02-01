@@ -818,6 +818,28 @@
             height: 100%;
         }
 
+        .modal-overview {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .modal-overview h4 {
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-overview p {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
         @media (max-width: 768px) {
             .modal {
                 padding: 0;
@@ -1112,6 +1134,10 @@
                         <div class="video-wrapper">
                             <iframe id="modal-video" src="" frameborder="0" allowfullscreen></iframe>
                         </div>
+                    </div>
+                    <div class="modal-overview" id="modal-overview-container" style="display: none;">
+                        <h4><i class="fas fa-book-open"></i> ゲーム概要</h4>
+                        <p id="modal-overview"></p>
                     </div>
                 </div>
             </div>
