@@ -441,13 +441,14 @@ header.scrolled {
     background: linear-gradient(135deg, #ff6b6b, #ee5a24);
     border-radius: 50px;
     box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
-    animation: pulse-badge 2s ease-in-out infinite;
+    animation: pulse-badge 4s ease-in-out infinite;
     max-width: fit-content;
+    will-change: transform;
 }
 
 .featured-badge .badge-icon {
     font-size: 1.5rem;
-    animation: bounce-icon 1s ease-in-out infinite;
+    animation: bounce-icon 2s ease-in-out infinite;
 }
 
 .featured-badge .badge-text {
@@ -501,6 +502,9 @@ header.scrolled {
 .marquee-content {
     display: inline-flex;
     animation: scroll-left 30s linear infinite;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .gallery-item {
@@ -575,6 +579,9 @@ header.scrolled {
     display: inline-flex;
     gap: 30px;
     animation: scroll-games 40s linear infinite;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .game-marquee-content:hover {

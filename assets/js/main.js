@@ -164,7 +164,7 @@ const init = async () => {
     const gameGridFull = document.getElementById('game-grid-full'); // For games.html
 
     const modal = document.getElementById('game-modal');
-    const closeModal = document.querySelector('.close-modal');
+    const closeModalBtn = modal ? modal.querySelector('.close-modal') : null;
     const modalImg = document.getElementById('modal-img');
     const modalTitle = document.getElementById('modal-title');
     const modalDesc = document.getElementById('modal-desc');
@@ -344,8 +344,8 @@ const init = async () => {
         }, 300);
     }
 
-    if (closeModal) {
-        closeModal.addEventListener('click', hideModal);
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', hideModal);
     }
 
     if (modal) {
