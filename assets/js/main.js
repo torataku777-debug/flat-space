@@ -107,22 +107,23 @@ const init = async () => {
         const galleryContent = document.querySelector('.marquee-content');
         if (!galleryContent) return;
 
-        // Try Supabase first
         let images = null;
+
+        // Supabaseから直接取得
         if (typeof getGalleryDataFromDB !== 'undefined') {
             images = await getGalleryDataFromDB();
         }
 
-        // Fallback to localStorage
-        if (!images) {
-            const galleryData = localStorage.getItem('flatspace_gallery');
-            images = galleryData ? JSON.parse(galleryData) : [
+        // データがない場合のみデフォルト値
+        if (!images || images.length === 0) {
+            images = [
                 'assets/images/gallery_01.jpg',
                 'assets/images/gallery_02.jpg',
                 'assets/images/gallery_03.jpg',
                 'assets/images/gallery_04.jpg',
                 'assets/images/gallery_05.jpg'
             ];
+            console.warn('ギャラリーデータが取得できませんでした。デフォルト画像を表示します。');
         }
 
         // Triple the array for seamless infinite loop
@@ -138,25 +139,27 @@ const init = async () => {
     loadGallery();
 
     // --- Game Library Grid & Modal ---
-    // Load games from Supabase or localStorage
+    // Load games from Supabase
     async function getGamesData() {
-        // Try Supabase first
+        let dbData = null;
+
+        // Supabaseから直接取得
         if (typeof getGamesDataFromDB !== 'undefined') {
             console.log('[DEBUG] Attempting to fetch from DB...');
-            const dbData = await getGamesDataFromDB();
+            dbData = await getGamesDataFromDB();
             if (dbData && dbData.length > 0) {
                 console.log('[DEBUG] Fetched from DB:', dbData);
                 return dbData;
             } else {
-                console.warn('[DEBUG] DB returned empty or null. Fallback to localStorage.');
+                console.warn('[DEBUG] DB returned empty or null.');
             }
         } else {
             console.error('[DEBUG] getGamesDataFromDB is undefined');
         }
 
-        // Fallback to localStorage
-        const data = localStorage.getItem('flatspace_games');
-        return data ? JSON.parse(data) : [
+        // データがない場合のみデフォルト値
+        console.warn('ゲームデータが取得できませんでした。デフォルトデータを表示します。');
+        return [
             {
                 id: 1,
                 title: "Catan",
@@ -647,24 +650,25 @@ const init = async () => {
     const gameContent = document.querySelector('.game-marquee-content');
     addTouchScroll(gameWrapper, gameContent);
 
-    // --- Dynamic News from Supabase or LocalStorage ---
+    // --- Dynamic News from Supabase ---
     async function loadNews() {
         const newsList = document.getElementById('news-list');
         if (!newsList) return;
 
-        // Try Supabase first
         let news = null;
+
+        // Supabaseから直接取得
         if (typeof getNewsDataFromDB !== 'undefined') {
             news = await getNewsDataFromDB();
         }
 
-        // Fallback to localStorage
-        if (!news) {
-            const newsData = localStorage.getItem('flatspace_news');
-            news = newsData ? JSON.parse(newsData) : [
+        // データがない場合のみデフォルト値
+        if (!news || news.length === 0) {
+            news = [
                 { id: 1, title: "オープン記念キャンペーン", content: "オープン記念で入場料無料キャンペーン実施中！", date: "2024-01-15", important: true },
                 { id: 2, title: "営業時間のお知らせ", content: "平日12:00-22:00、土日祝11:00-23:00で営業しております。", date: "2024-01-10", important: false }
             ];
+            console.warn('お知らせデータが取得できませんでした。デフォルトデータを表示します。');
         }
 
         // Sort by date (newest first)

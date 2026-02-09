@@ -188,6 +188,12 @@ body {
     color: var(--text-color);
 }
 
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
 .info-box {
     background: #e7f3ff;
     border-left: 4px solid #2196F3;
@@ -262,6 +268,21 @@ body {
 .btn-small {
     padding: 6px 12px;
     font-size: 0.85rem;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #218838, #1aa179);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.btn-success i {
+    color: white;
 }
 
 /* =========================================

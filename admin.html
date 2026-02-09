@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>管理画面 | ふらっとスペース</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,9 +73,14 @@
             <section id="tab-gallery" class="tab-content active">
                 <div class="section-header">
                     <h2>ギャラリー管理</h2>
-                    <button id="add-gallery-btn" class="btn-primary">
-                        <i class="fa-solid fa-plus"></i> 画像を追加
-                    </button>
+                    <div class="header-actions">
+                        <button id="publish-gallery-btn" class="btn-success">
+                            <i class="fa-solid fa-check-circle"></i> 確定・公開
+                        </button>
+                        <button id="add-gallery-btn" class="btn-primary">
+                            <i class="fa-solid fa-plus"></i> 画像を追加
+                        </button>
+                    </div>
                 </div>
                 <div id="gallery-list" class="gallery-grid"></div>
             </section>
@@ -81,9 +89,14 @@
             <section id="tab-games" class="tab-content">
                 <div class="section-header">
                     <h2>ボードゲーム管理</h2>
-                    <button id="add-game-btn" class="btn-primary">
-                        <i class="fa-solid fa-plus"></i> ゲームを追加
-                    </button>
+                    <div class="header-actions">
+                        <button id="publish-games-btn" class="btn-success">
+                            <i class="fa-solid fa-check-circle"></i> 確定・公開
+                        </button>
+                        <button id="add-game-btn" class="btn-primary">
+                            <i class="fa-solid fa-plus"></i> ゲームを追加
+                        </button>
+                    </div>
                 </div>
                 <div class="info-box">
                     <i class="fa-solid fa-info-circle"></i>
@@ -96,9 +109,14 @@
             <section id="tab-news" class="tab-content">
                 <div class="section-header">
                     <h2>お知らせ管理</h2>
-                    <button id="add-news-btn" class="btn-primary">
-                        <i class="fa-solid fa-plus"></i> お知らせを追加
-                    </button>
+                    <div class="header-actions">
+                        <button id="publish-news-btn" class="btn-success">
+                            <i class="fa-solid fa-check-circle"></i> 確定・公開
+                        </button>
+                        <button id="add-news-btn" class="btn-primary">
+                            <i class="fa-solid fa-plus"></i> お知らせを追加
+                        </button>
+                    </div>
                 </div>
                 <div id="news-list" class="news-table"></div>
             </section>

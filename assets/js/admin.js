@@ -68,23 +68,25 @@ async function getGalleryData() {
 }
 
 async function saveGalleryData(data) {
-    // Save to Supabase
-    const success = await saveGalleryDataToDB(data);
-
-    // Always save to localStorage as backup
+    // 下書きとしてlocalStorageに保存のみ
     localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(data));
-
-    return success;
+    return true;
 }
 
 async function getGamesData() {
-    // Try Supabase first
-    const dbData = await getGamesDataFromDB();
-    if (dbData) return dbData;
+    // 1. localStorageの下書きを優先（編集中のデータ）
+    const draftData = localStorage.getItem(STORAGE_KEYS.GAMES);
+    if (draftData) {
+        const parsed = JSON.parse(draftData);
+        if (parsed && parsed.length > 0) return parsed;
+    }
 
-    // Fallback to localStorage
-    const data = localStorage.getItem(STORAGE_KEYS.GAMES);
-    return data ? JSON.parse(data) : [
+    // 2. Supabaseから公開データを取得
+    const dbData = await getGamesDataFromDB();
+    if (dbData && dbData.length > 0) return dbData;
+
+    // 3. デフォルトデータ
+    return [
         { id: 1, title: "Catan", desc: "無人島を開拓する世界的ベストセラー。", img: "assets/images/game_catan.jpg", tags: ["#初心者歓迎", "#60分〜"], featured: true },
         { id: 2, title: "Dominion", desc: "自分だけのデッキを構築するカードゲーム。", img: "assets/images/game_dominion.jpg", tags: ["#戦略", "#30分〜"], featured: true },
         { id: 3, title: "Blokus", desc: "テトリスのようなピースを角で繋げる陣取りゲーム。", img: "assets/images/game_blokus.jpg", tags: ["#パズル", "#20分〜"], featured: true },
@@ -97,36 +99,103 @@ async function getGamesData() {
 }
 
 async function saveGamesData(data) {
-    // Save to Supabase
-    const success = await saveGamesDataToDB(data);
-
-    // Always save to localStorage as backup
+    // 下書きとしてlocalStorageに保存のみ
     localStorage.setItem(STORAGE_KEYS.GAMES, JSON.stringify(data));
-
-    return success;
+    return true;
 }
 
 async function getNewsData() {
-    // Try Supabase first
-    const dbData = await getNewsDataFromDB();
-    if (dbData) return dbData;
+    // 1. localStorageの下書きを優先（編集中のデータ）
+    const draftData = localStorage.getItem(STORAGE_KEYS.NEWS);
+    if (draftData) {
+        const parsed = JSON.parse(draftData);
+        if (parsed && parsed.length > 0) return parsed;
+    }
 
-    // Fallback to localStorage
-    const data = localStorage.getItem(STORAGE_KEYS.NEWS);
-    return data ? JSON.parse(data) : [
+    // 2. Supabaseから公開データを取得
+    const dbData = await getNewsDataFromDB();
+    if (dbData && dbData.length > 0) return dbData;
+
+    // 3. デフォルトデータ
+    return [
         { id: 1, title: "オープン記念キャンペーン", content: "オープン記念で入場料無料キャンペーン実施中！", date: "2024-01-15", important: true },
         { id: 2, title: "営業時間のお知らせ", content: "平日12:00-22:00、土日祝11:00-23:00で営業しております。", date: "2024-01-10", important: false }
     ];
 }
 
 async function saveNewsData(data) {
-    // Save to Supabase
-    const success = await saveNewsDataToDB(data);
-
-    // Always save to localStorage as backup
+    // 下書きとしてlocalStorageに保存のみ
     localStorage.setItem(STORAGE_KEYS.NEWS, JSON.stringify(data));
+    return true;
+}
 
-    return success;
+// =========================================
+// PUBLISH FUNCTIONS (確定・公開)
+// =========================================
+async function publishGallery() {
+    showLoading('ギャラリーデータを公開中...');
+    try {
+        const data = await getGalleryData();
+        const success = await saveGalleryDataToDB(data);
+
+        if (success) {
+            alert('✅ ギャラリーデータを公開しました！\n一般ページに反映されます。');
+            // 公開後、localStorageの下書きをクリア
+            localStorage.removeItem(STORAGE_KEYS.GALLERY);
+            await renderGallery();
+        } else {
+            throw new Error('Supabaseへの保存に失敗しました。ネットワーク接続を確認してください。');
+        }
+    } catch (error) {
+        alert('❌ エラー: ' + error.message);
+        console.error('Publish gallery error:', error);
+    } finally {
+        hideLoading();
+    }
+}
+
+async function publishGames() {
+    showLoading('ゲームデータを公開中...');
+    try {
+        const data = await getGamesData();
+        const success = await saveGamesDataToDB(data);
+
+        if (success) {
+            alert('✅ ゲームデータを公開しました！\n一般ページに反映されます。');
+            // 公開後、localStorageの下書きをクリア
+            localStorage.removeItem(STORAGE_KEYS.GAMES);
+            await renderGames();
+        } else {
+            throw new Error('Supabaseへの保存に失敗しました。ネットワーク接続を確認してください。');
+        }
+    } catch (error) {
+        alert('❌ エラー: ' + error.message);
+        console.error('Publish games error:', error);
+    } finally {
+        hideLoading();
+    }
+}
+
+async function publishNews() {
+    showLoading('お知らせデータを公開中...');
+    try {
+        const data = await getNewsData();
+        const success = await saveNewsDataToDB(data);
+
+        if (success) {
+            alert('✅ お知らせデータを公開しました！\n一般ページに反映されます。');
+            // 公開後、localStorageの下書きをクリア
+            localStorage.removeItem(STORAGE_KEYS.NEWS);
+            await renderNews();
+        } else {
+            throw new Error('Supabaseへの保存に失敗しました。ネットワーク接続を確認してください。');
+        }
+    } catch (error) {
+        alert('❌ エラー: ' + error.message);
+        console.error('Publish news error:', error);
+    } finally {
+        hideLoading();
+    }
 }
 
 // =========================================
@@ -646,14 +715,17 @@ async function initAdmin() {
         showModal(document.getElementById('gallery-modal'));
     });
     document.getElementById('save-gallery-btn').addEventListener('click', addGalleryItem);
+    document.getElementById('publish-gallery-btn').addEventListener('click', publishGallery);
 
     // Event listeners - Games
     document.getElementById('add-game-btn').addEventListener('click', () => openGameModal());
     document.getElementById('save-game-btn').addEventListener('click', saveGame);
+    document.getElementById('publish-games-btn').addEventListener('click', publishGames);
 
     // Event listeners - News
     document.getElementById('add-news-btn').addEventListener('click', () => openNewsModal());
     document.getElementById('save-news-btn').addEventListener('click', saveNews);
+    document.getElementById('publish-news-btn').addEventListener('click', publishNews);
 
     // Event listeners - Data management
     document.getElementById('export-data-btn').addEventListener('click', exportData);
