@@ -1,18 +1,4 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "*.html",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "assets/**",
-            "use": "@vercel/static"
-        }
-    ],
-    "routes": [
-        {
-            "handle": "filesystem"
-        }
-    ]
+    "cleanUrls": true,
+    "trailingSlash": false
 }
