@@ -1,0 +1,7 @@
+# Vercel Output Directory Config
+# https://vercel.com/docs/concepts/deployments/build-step#output-directory
+
+.git
+.env.local
+.DS_Store
+antigravity_data
