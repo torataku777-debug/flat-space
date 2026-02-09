@@ -52,13 +52,21 @@ function logout() {
 // DATA MANAGEMENT
 // =========================================
 async function getGalleryData() {
-    // Try Supabase first
+    // 1. localStorageの下書きを優先（編集中のデータ）
+    const draftData = localStorage.getItem(STORAGE_KEYS.GALLERY);
+    if (draftData) {
+        const parsed = JSON.parse(draftData);
+        if (parsed && parsed.length > 0) {
+            return parsed;
+        }
+    }
+
+    // 2. Supabaseから公開データを取得
     const dbData = await getGalleryDataFromDB();
     if (dbData) return dbData;
 
-    // Fallback to localStorage
-    const data = localStorage.getItem(STORAGE_KEYS.GALLERY);
-    return data ? JSON.parse(data) : [
+    // 3. デフォルトデータ
+    return [
         'assets/images/gallery_01.jpg',
         'assets/images/gallery_02.jpg',
         'assets/images/gallery_03.jpg',
