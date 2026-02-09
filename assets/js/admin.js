@@ -568,52 +568,6 @@ async function deleteNews(id) {
 }
 
 // =========================================
-// DATA EXPORT/IMPORT
-// =========================================
-function exportData() {
-    const data = {
-        gallery: getGalleryData(),
-        games: getGamesData(),
-        news: getNewsData(),
-        exportDate: new Date().toISOString()
-    };
-
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `flatspace-data-${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-function importData() {
-    document.getElementById('import-file-input').click();
-}
-
-async function handleImportFile(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-        try {
-            const data = JSON.parse(e.target.result);
-
-            if (data.gallery) await saveGalleryData(data.gallery);
-            if (data.games) await saveGamesData(data.games);
-            if (data.news) await saveNewsData(data.news);
-
-            alert('データを正常にインポートしました');
-            await renderAll();
-        } catch (error) {
-            alert('エラー: ' + error.message);
-        }
-    };
-    reader.readAsText(file);
-}
-
-// =========================================
 // UI HELPERS
 // =========================================
 function showLoading(text = '保存中...') {
@@ -727,10 +681,6 @@ async function initAdmin() {
     document.getElementById('save-news-btn').addEventListener('click', saveNews);
     document.getElementById('publish-news-btn').addEventListener('click', publishNews);
 
-    // Event listeners - Data management
-    document.getElementById('export-data-btn').addEventListener('click', exportData);
-    document.getElementById('import-data-btn').addEventListener('click', importData);
-    document.getElementById('import-file-input').addEventListener('change', handleImportFile);
 
     // Event listeners - Auth
     document.getElementById('logout-btn').addEventListener('click', logout);
