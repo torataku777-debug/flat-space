@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="350" viewBox="0 0 100 350">
+  <defs>
+    <style>
+      .vine-stem { fill: none; stroke: #6BB896; stroke-width: 1.5; }
+      .vine-leaf { fill: #4A9B7F; opacity: 0.8; }
+      .vine-leaf-light { fill: #8FD4B8; opacity: 0.7; }
+    </style>
+  </defs>
+  
+  <!-- Main vine stem (small curved path) -->
+  <path class="vine-stem" d="M50,0 Q45,70 50,140 Q55,210 50,280 Q48,315 50,350"/>
+  
+  <!-- Smaller leaves along the vine -->
+  <ellipse class="vine-leaf" cx="42" cy="40" rx="10" ry="16" transform="rotate(-25 42 40)"/>
+  <ellipse class="vine-leaf-light" cx="58" cy="70" rx="9" ry="14" transform="rotate(22 58 70)"/>
+  
+  <ellipse class="vine-leaf-light" cx="46" cy="120" rx="10" ry="15" transform="rotate(-20 46 120)"/>
+  <ellipse class="vine-leaf" cx="54" cy="160" rx="11" ry="17" transform="rotate(25 54 160)"/>
+  
+  <ellipse class="vine-leaf" cx="44" cy="210" rx="10" ry="16" transform="rotate(-23 44 210)"/>
+  <ellipse class="vine-leaf-light" cx="56" cy="250" rx="9" ry="15" transform="rotate(20 56 250)"/>
+  
+  <ellipse class="vine-leaf-light" cx="48" cy="300" rx="10" ry="16" transform="rotate(-18 48 300)"/>
+  <ellipse class="vine-leaf" cx="50" cy="335" rx="9" ry="14" transform="rotate(0 50 335)"/>
+</svg>

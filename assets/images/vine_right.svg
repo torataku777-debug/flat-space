@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="600" viewBox="0 0 150 600">
+  <defs>
+    <style>
+      .vine-stem { fill: none; stroke: #6BB896; stroke-width: 2; }
+      .vine-leaf { fill: #4A9B7F; opacity: 0.8; }
+      .vine-leaf-light { fill: #8FD4B8; opacity: 0.7; }
+    </style>
+  </defs>
+  
+  <!-- Main vine stem (curved path, mirrored) -->
+  <path class="vine-stem" d="M75,0 Q90,100 75,200 T75,400 Q65,500 75,600"/>
+  
+  <!-- Leaves along the vine (mirrored positions) -->
+  <!-- Top leaves -->
+  <ellipse class="vine-leaf" cx="85" cy="50" rx="15" ry="25" transform="rotate(30 85 50)"/>
+  <ellipse class="vine-leaf-light" cx="65" cy="80" rx="12" ry="20" transform="rotate(-25 65 80)"/>
+  
+  <!-- Middle-top leaves -->
+  <ellipse class="vine-leaf-light" cx="80" cy="140" rx="14" ry="23" transform="rotate(20 80 140)"/>
+  <ellipse class="vine-leaf" cx="70" cy="180" rx="16" ry="24" transform="rotate(-30 70 180)"/>
+  
+  <!-- Middle leaves -->
+  <ellipse class="vine-leaf" cx="88" cy="250" rx="15" ry="25" transform="rotate(25 88 250)"/>
+  <ellipse class="vine-leaf-light" cx="62" cy="290" rx="13" ry="22" transform="rotate(-20 62 290)"/>
+  
+  <!-- Middle-bottom leaves -->
+  <ellipse class="vine-leaf-light" cx="82" cy="360" rx="14" ry="24" transform="rotate(30 82 360)"/>
+  <ellipse class="vine-leaf" cx="68" cy="400" rx="15" ry="26" transform="rotate(-28 68 400)"/>
+  
+  <!-- Bottom leaves -->
+  <ellipse class="vine-leaf" cx="80" cy="480" rx="16" ry="25" transform="rotate(22 80 480)"/>
+  <ellipse class="vine-leaf-light" cx="70" cy="530" rx="14" ry="23" transform="rotate(-25 70 530)"/>
+  <ellipse class="vine-leaf" cx="75" cy="580" rx="13" ry="20" transform="rotate(0 75 580)"/>
+</svg>
