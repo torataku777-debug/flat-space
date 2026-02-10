@@ -12,8 +12,10 @@ const init = async () => {
         if (skipIntro === 'true') {
             openingOverlay.style.display = 'none';
         } else {
-            // 再生速度を2倍に設定
-            openingVideo.playbackRate = 2.0;
+            // イーズアウト効果：最初は速く、徐々に遅く
+            let initialRate = 2.5;
+            let targetRate = 1.5;
+            openingVideo.playbackRate = initialRate;
 
             // Attempt to play
             const playPromise = openingVideo.play();
@@ -44,6 +46,15 @@ const init = async () => {
             document.documentElement.style.overflow = 'hidden';
 
             openingVideo.addEventListener('timeupdate', () => {
+                // イーズアウトアニメーション
+                if (openingVideo.duration > 0) {
+                    const progress = openingVideo.currentTime / openingVideo.duration;
+                    if (progress > 0.3 && progress < 0.95) {
+                        const easeProgress = Math.min((progress - 0.3) / 0.65, 1);
+                        openingVideo.playbackRate = initialRate - (initialRate - targetRate) * easeProgress;
+                    }
+                }
+
                 // Start fade out at 3.5s mark
                 if (!fadeStarted && (openingVideo.currentTime >= 3.5 || (openingVideo.duration > 0 && openingVideo.duration - openingVideo.currentTime <= 0.5))) {
                     fadeStarted = true;
