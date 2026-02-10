@@ -708,3 +708,25 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
+// --- Scroll-linked Geometric Shapes Animation ---
+// スクロール連動の幾何学図形アニメーション
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollProgress = Math.min(scrollY / maxScroll, 1);
+
+    // body::before（円形）の動き
+    const circleRotate = scrollProgress * 360; // 1回転
+    const circleScale = 1 + scrollProgress * 0.3; // 最大1.3倍
+
+    // body::after（三角形）の動き
+    const triangleRotate = -scrollProgress * 180; // 半回転（逆方向）
+    const triangleTranslate = scrollProgress * 50; // 50px移動
+
+    // CSSカスタムプロパティとして設定
+    document.documentElement.style.setProperty('--scroll-circle-rotate', circleRotate + 'deg');
+    document.documentElement.style.setProperty('--scroll-circle-scale', circleScale);
+    document.documentElement.style.setProperty('--scroll-triangle-rotate', triangleRotate + 'deg');
+    document.documentElement.style.setProperty('--scroll-triangle-translate', triangleTranslate + 'px');
+});
