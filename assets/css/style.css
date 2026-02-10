@@ -52,9 +52,9 @@ body::before {
     position: fixed;
     top: 10%;
     right: 8%;
-    width: 200px;
-    height: 200px;
-    background: linear-gradient(135deg, rgba(123, 168, 133, 0.08), rgba(244, 233, 193, 0.08));
+    width: 350px;
+    height: 350px;
+    background: linear-gradient(135deg, rgba(123, 168, 133, 0.12), rgba(244, 233, 193, 0.12));
     border-radius: 50%;
     z-index: -1;
     animation: float-shape 20s ease-in-out infinite;
@@ -65,9 +65,9 @@ body::after {
     position: fixed;
     bottom: 15%;
     left: 5%;
-    width: 150px;
-    height: 150px;
-    background: rgba(123, 168, 133, 0.06);
+    width: 280px;
+    height: 280px;
+    background: rgba(123, 168, 133, 0.1);
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
     z-index: -1;
     animation: float-shape 25s ease-in-out infinite reverse;
@@ -77,11 +77,11 @@ body::after {
 
     0%,
     100% {
-        transform: translateY(0) rotate(0deg);
+        transform: translateY(0) rotate(0deg) scale(1);
     }
 
     50% {
-        transform: translateY(-30px) rotate(10deg);
+        transform: translateY(-40px) rotate(15deg) scale(1.1);
     }
 }
 
@@ -460,13 +460,13 @@ header.scrolled {
     position: relative;
 }
 
-/* セクション装飾：幾何学図形 */
+/* セクション装飾：幾何学図形 - 大きめ */
 .section::before {
     content: '';
     position: absolute;
-    width: 100px;
-    height: 100px;
-    opacity: 0.3;
+    width: 180px;
+    height: 180px;
+    opacity: 0.25;
     z-index: 0;
     pointer-events: none;
 }
@@ -475,8 +475,8 @@ header.scrolled {
 .section:nth-child(odd)::before {
     top: 8%;
     right: 5%;
-    background: rgba(123, 168, 133, 0.08);
-    border-radius: 12px;
+    background: rgba(123, 168, 133, 0.1);
+    border-radius: 20px;
     transform: rotate(25deg);
 }
 
@@ -484,7 +484,7 @@ header.scrolled {
 .section:nth-child(even)::before {
     bottom: 12%;
     left: 3%;
-    background: linear-gradient(135deg, rgba(244, 233, 193, 0.1), rgba(123, 168, 133, 0.08));
+    background: linear-gradient(135deg, rgba(244, 233, 193, 0.12), rgba(123, 168, 133, 0.1));
     border-radius: 50%;
 }
 
@@ -550,9 +550,9 @@ header.scrolled {
     margin-right: auto;
 }
 
-/* Featured Badge - ナチュラルデザイン */
+/* Featured Badge - ナチュラルデザイン（中央揃え） */
 .featured-badge {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
