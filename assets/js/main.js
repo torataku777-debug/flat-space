@@ -12,6 +12,9 @@ const init = async () => {
         if (skipIntro === 'true') {
             openingOverlay.style.display = 'none';
         } else {
+            // 再生速度を2倍に設定
+            openingVideo.playbackRate = 2.0;
+
             // Attempt to play
             const playPromise = openingVideo.play();
 

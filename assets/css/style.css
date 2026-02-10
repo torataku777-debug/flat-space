@@ -43,6 +43,46 @@ body {
     line-height: 1.8;
     letter-spacing: 0.05em;
     overflow-x: hidden;
+    position: relative;
+}
+
+/* 背景装飾：幾何学図形 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 10%;
+    right: 8%;
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, rgba(123, 168, 133, 0.08), rgba(244, 233, 193, 0.08));
+    border-radius: 50%;
+    z-index: -1;
+    animation: float-shape 20s ease-in-out infinite;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 15%;
+    left: 5%;
+    width: 150px;
+    height: 150px;
+    background: rgba(123, 168, 133, 0.06);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    z-index: -1;
+    animation: float-shape 25s ease-in-out infinite reverse;
+}
+
+@keyframes float-shape {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-30px) rotate(10deg);
+    }
 }
 
 /* Image Fallback */
@@ -417,11 +457,42 @@ header.scrolled {
    ========================================= */
 .section {
     padding: var(--section-padding);
+    position: relative;
+}
+
+/* セクション装飾：幾何学図形 */
+.section::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* 奇数セクション - 四角形 */
+.section:nth-child(odd)::before {
+    top: 8%;
+    right: 5%;
+    background: rgba(123, 168, 133, 0.08);
+    border-radius: 12px;
+    transform: rotate(25deg);
+}
+
+/* 偶数セクション - 円形 */
+.section:nth-child(even)::before {
+    bottom: 12%;
+    left: 3%;
+    background: linear-gradient(135deg, rgba(244, 233, 193, 0.1), rgba(123, 168, 133, 0.08));
+    border-radius: 50%;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 
 .container-fluid {
@@ -479,31 +550,43 @@ header.scrolled {
     margin-right: auto;
 }
 
-/* Featured Badge */
+/* Featured Badge - ナチュラルデザイン */
 .featured-badge {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     margin: 20px auto 15px;
-    padding: 12px 30px;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
-    animation: pulse-badge 4s ease-in-out infinite;
+    padding: 10px 24px;
+    background: rgba(123, 168, 133, 0.15);
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
     max-width: fit-content;
-    will-change: transform;
+    position: relative;
+}
+
+.featured-badge::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg,
+            rgba(123, 168, 133, 0.3),
+            rgba(244, 233, 193, 0.3));
+    border-radius: 8px;
+    z-index: -1;
 }
 
 .featured-badge .badge-icon {
-    font-size: 1.5rem;
-    animation: bounce-icon 2s ease-in-out infinite;
+    font-size: 1.3rem;
 }
 
 .featured-badge .badge-text {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
-    color: white;
+    color: var(--primary-color);
     letter-spacing: 0.05em;
 }
 
@@ -559,7 +642,8 @@ header.scrolled {
 .gallery-item {
     width: 500px;
     height: 350px;
-    margin-right: 20px;
+    margin-right: 30px;
+    /* 間隔を広げる */
     border-radius: 16px;
     overflow: visible;
     /* フレーム装飾を表示 */
