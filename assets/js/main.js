@@ -12,9 +12,9 @@ const init = async () => {
         if (skipIntro === 'true') {
             openingOverlay.style.display = 'none';
         } else {
-            // イーズアウト効果：最初は速く、徐々に遅く
-            let initialRate = 2.5;
-            let targetRate = 1.5;
+            // イーズアウト効果：最初は速く、徐々に遅く（0.8倍に調整）
+            let initialRate = 2.0;
+            let targetRate = 1.2;
             openingVideo.playbackRate = initialRate;
 
             // Attempt to play

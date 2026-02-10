@@ -46,18 +46,27 @@ body {
     position: relative;
 }
 
-/* 背景装飾：幾何学図形 */
+/* 背景装飾：幾何学図形 - 大きめ + スクロール連動 */
+:root {
+    --scroll-circle-rotate: 0deg;
+    --scroll-circle-scale: 1;
+    --scroll-triangle-rotate: 0deg;
+    --scroll-triangle-translate: 0px;
+}
+
 body::before {
     content: '';
     position: fixed;
     top: 10%;
-    right: 8%;
+    right: 5%;
     width: 350px;
     height: 350px;
     background: linear-gradient(135deg, rgba(123, 168, 133, 0.12), rgba(244, 233, 193, 0.12));
     border-radius: 50%;
     z-index: -1;
     animation: float-shape 20s ease-in-out infinite;
+    transform: rotate(var(--scroll-circle-rotate)) scale(var(--scroll-circle-scale));
+    transition: transform 0.1s ease-out;
 }
 
 body::after {
@@ -71,6 +80,8 @@ body::after {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
     z-index: -1;
     animation: float-shape 25s ease-in-out infinite reverse;
+    transform: rotate(var(--scroll-triangle-rotate)) translateY(var(--scroll-triangle-translate));
+    transition: transform 0.1s ease-out;
 }
 
 @keyframes float-shape {
