@@ -721,8 +721,8 @@ header.scrolled {
 
 .marquee-wrapper {
     width: 100%;
-    max-width: 900px;
-    /* 600px → 900px に拡大 */
+    max-width: 1200px;
+    /* 900px → 1200px にさらに拡大 */
     position: relative;
     height: 600px;
     /* 高さは600pxのまま */
