@@ -780,8 +780,8 @@ header.scrolled {
 .gallery-item img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    /* cover → contain: 画像全体を表示 */
+    object-fit: cover;
+    /* contain → cover: フレーム横幅いっぱいに拡大表示 */
     border-radius: 12px;
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
