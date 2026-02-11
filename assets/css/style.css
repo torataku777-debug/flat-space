@@ -627,6 +627,86 @@ header.scrolled {
     }
 }
 
+/* ========================================
+   FEATURES SECTION
+======================================== */
+
+.features-section {
+    background: linear-gradient(135deg, #f4f9f4 0%, #ffffff 100%);
+    padding: 60px 0;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(47, 82, 51, 0.08);
+    transition: all 0.3s ease;
+    border: 2px solid rgba(123, 168, 133, 0.1);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(47, 82, 51, 0.15);
+    border-color: var(--primary-color);
+}
+
+.feature-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    line-height: 1;
+}
+
+.feature-card h3 {
+    font-size: 18px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.feature-card p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .feature-card {
+        padding: 20px;
+    }
+
+    .feature-icon {
+        font-size: 36px;
+    }
+
+    .feature-card h3 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========================================
+   GALLERY SECTION
+======================================== */
+
 /* Gallery (Slideshow with Fade) */
 .gallery-wrapper {
     width: 100%;
@@ -1611,10 +1691,21 @@ footer::before {
         transform: translateY(-5px);
     }
 
-    /* Gallery: larger on mobile */
+    /* Gallery: larger and centered on mobile */
+    .marquee-wrapper {
+        max-width: 90vw;
+        margin: 0 auto;
+    }
+
     .gallery-item {
-        width: 340px;
-        height: 240px;
+        width: 100%;
+        height: 300px;
+    }
+
+    .gallery-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .hero-bg-single {

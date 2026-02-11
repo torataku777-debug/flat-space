@@ -1074,3 +1074,110 @@ function setupImageUpload() {
 
 // Add setupImageUpload to initAdmin
 // Modify the initAdmin function to include this at the end
+
+// =========================================
+// TERMS MANAGEMENT
+// =========================================
+async function loadTerms() {
+    try {
+        const { data, error } = await supabase
+            .from('terms')
+            .select('content, updated_at')
+            .order('updated_at', { ascending: false })
+            .limit(1)
+            .single();
+
+        if (error) {
+            console.error('Error loading terms:', error);
+            document.getElementById('terms-content').value = '';
+            return;
+        }
+
+        if (data) {
+            document.getElementById('terms-content').value = data.content;
+            const lastUpdated = new Date(data.updated_at);
+            document.getElementById('terms-last-updated').textContent =
+                `最終更新: ${lastUpdated.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`;
+        } else {
+            document.getElementById('terms-content').value = '';
+            document.getElementById('terms-last-updated').textContent = '利用規約がまだ登録されていません';
+        }
+    } catch (error) {
+        console.error('Error loading terms:', error);
+        alert('❌ 利用規約の読み込みに失敗しました');
+    }
+}
+
+async function saveTerms() {
+    const content = document.getElementById('terms-content').value.trim();
+
+    if (!content) {
+        alert('利用規約の内容を入力してください');
+        return;
+    }
+
+    showLoading('利用規約を保存中...');
+    try {
+        // Check if any terms exist
+        const { data: existingData } = await supabase
+            .from('terms')
+            .select('id')
+            .limit(1)
+            .single();
+
+        if (existingData) {
+            // Update existing
+            const { error } = await supabase
+                .from('terms')
+                .update({ content, updated_at: new Date().toISOString() })
+                .eq('id', existingData.id);
+
+            if (error) throw error;
+        } else {
+            // Insert new
+            const { error } = await supabase
+                .from('terms')
+                .insert([{ content }]);
+
+            if (error) throw error;
+        }
+
+        alert('✅ 利用規約を保存しました！');
+        await loadTerms();
+    } catch (error) {
+        console.error('Error saving terms:', error);
+        alert('❌ 利用規約の保存に失敗しました: ' + error.message);
+    } finally {
+        hideLoading();
+    }
+}
+
+// Update renderAll function to include terms
+const originalRenderAll = renderAll;
+renderAll = async function () {
+    await originalRenderAll();
+    await loadTerms();
+};
+
+// Update tab switching to load terms when terms tab is clicked
+const originalSwitchTab = switchTab;
+switchTab = function (tabName) {
+    originalSwitchTab(tabName);
+    if (tabName === 'terms') {
+        loadTerms();
+    }
+};
+
+// Update initAdmin to add terms event listener
+const originalInitAdmin = initAdmin;
+initAdmin = async function () {
+    await originalInitAdmin();
+
+    // Event listener - Terms
+    document.getElementById('save-terms-btn').addEventListener('click', saveTerms);
+
+    // Load terms when opening the tab
+    if (currentTab === 'terms') {
+        await loadTerms();
+    }
+};

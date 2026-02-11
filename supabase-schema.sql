@@ -95,3 +95,63 @@ CREATE POLICY "Enable delete for all users" ON news
 -- =========================================
 -- テーブルが正常に作成されました。
 -- Table Editorで確認してください。
+
+
+-- =========================================
+-- 4. Terms (利用規約) テーブル
+-- =========================================
+CREATE TABLE IF NOT EXISTS terms (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    content TEXT NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- RLSを有効化
+ALTER TABLE terms ENABLE ROW LEVEL SECURITY;
+
+-- 全員が読み取り可能（SELECT）
+CREATE POLICY "Enable read access for all users" ON terms
+    FOR SELECT USING (true);
+
+-- 全員が書き込み可能（INSERT, UPDATE, DELETE）
+CREATE POLICY "Enable insert for all users" ON terms
+    FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Enable update for all users" ON terms
+    FOR UPDATE USING (true);
+
+CREATE POLICY "Enable delete for all users" ON terms
+    FOR DELETE USING (true);
+
+-- 初期データを挿入
+INSERT INTO terms (content) VALUES ('【ふらっとスペース 利用規約】
+
+当店をご利用いただく前に、必ず以下の利用規約をお読みください。
+
+■ 第1条（適用）
+本規約は、ふらっとスペース（以下「当店」）のサービスを利用するすべてのお客様に適用されます。
+
+■ 第2条（利用料金）
+・入場料：500円（店舗貸切プランを除く）
+・時間料金：10分単位でのご利用が可能です
+・料金の詳細は店内掲示物またはウェブサイトをご確認ください
+
+■ 第3条（禁止事項）
+以下の行為を禁止します：
+・他のお客様の迷惑となる行為
+・店内の備品・ゲームの破損、紛失
+・飲食物の無断持ち込み（持ち込み可能な場合を除く）
+・店内での喫煙
+・法令に違反する行為
+
+■ 第4条（損害賠償）
+お客様が当店の設備やゲーム等を破損、紛失された場合、相応の賠償をお願いする場合があります。
+
+■ 第5条（個人情報の取り扱い）
+当店はお客様の個人情報を適切に管理し、お客様の同意なしに第三者に開示・提供することはありません。
+
+■ 第6条（規約の変更）
+当店は、必要に応じて本規約を変更することがあります。変更後の規約は、店内掲示またはウェブサイトへの掲載をもって効力を生じるものとします。
+
+■ お問い合わせ
+ご不明な点がございましたら、スタッフまでお気軽にお声がけください。');

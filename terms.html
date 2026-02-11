@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用規約 | ふらっとスペース</title>
+    <meta name="description" content="ふらっとスペースの利用規約です。">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="supabase-env.js?v=20240201" defer></script>
+    <script src="assets/js/supabase-config.js?v=20240201" defer></script>
+    <script src="assets/js/terms.js" defer></script>
+
+    <style>
+        .terms-container {
+            max-width: 900px;
+            margin: 100px auto 60px;
+            padding: 40px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .terms-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .terms-header h1 {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .last-updated {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .terms-content {
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+            font-size: 15px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .terms-container {
+                margin: 80px 20px 40px;
+                padding: 20px;
+            }
+
+            .terms-header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="assets/images/logo.png" alt="ふらっとスペース Logo" class="logo-img">
+            </a>
+        </div>
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="index.html#gallery">ギャラリー</a></li>
+                <li><a href="index.html#price">料金</a></li>
+                <li><a href="index.html#games">ゲーム</a></li>
+                <li><a href="index.html#access">アクセス</a></li>
+                <li><a href="terms.html" class="active">利用規約</a></li>
+            </ul>
+        </nav>
+        <button id="menu-toggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu">
+        <nav>
+            <ul>
+                <li><a href="index.html#gallery">ギャラリー</a></li>
+                <li><a href="index.html#price">料金</a></li>
+                <li><a href="index.html#games">ゲーム</a></li>
+                <li><a href="index.html#access">アクセス</a></li>
+                <li><a href="terms.html">利用規約</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <div class="terms-container">
+            <div class="terms-header">
+                <h1>利用規約</h1>
+                <p class="last-updated" id="last-updated">読み込み中...</p>
+            </div>
+            <div id="terms-content" class="terms-content loading">
+                利用規約を読み込んでいます...
+            </div>
+            <a href="index.html" class="back-button">トップページに戻る</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ふらっとスペース</h3>
+                    <p>川崎のボードゲーム＆ポーカーカフェ</p>
+                </div>
+                <div class="footer-section">
+                    <h3>営業時間</h3>
+                    <p>平日: 12:00 - 22:00<br>土日祝: 11:00 - 22:00</p>
+                </div>
+                <div class="footer-section">
+                    <h3>アクセス</h3>
+                    <p>JR川崎駅 徒歩5分</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ふらっとスペース. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js?v=20240201"></script>
+</body>
+
+</html>

@@ -59,6 +59,9 @@
             <button class="tab-btn" data-tab="news">
                 <i class="fa-solid fa-bell"></i> お知らせ
             </button>
+            <button class="tab-btn" data-tab="terms">
+                <i class="fa-solid fa-file-contract"></i> 利用規約
+            </button>
         </nav>
 
         <!-- Main Content -->
@@ -113,6 +116,27 @@
                     </div>
                 </div>
                 <div id="news-list" class="news-table"></div>
+            </section>
+
+            <!-- Terms Section -->
+            <section id="tab-terms" class="tab-content">
+                <div class="section-header">
+                    <h2>利用規約管理</h2>
+                    <div class="header-actions">
+                        <button id="save-terms-btn" class="btn-success">
+                            <i class="fa-solid fa-save"></i> 保存
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>利用規約</label>
+                    <textarea id="terms-content" rows="20" placeholder="利用規約の内容を入力してください..."></textarea>
+                </div>
+                <div class="info-box">
+                    <i class="fa-solid fa-info-circle"></i>
+                    更新日時は自動的に記録されます
+                </div>
+                <div id="terms-last-updated" style="margin-top: 20px; color: #666; font-size: 14px;"></div>
             </section>
         </main>
     </div>
