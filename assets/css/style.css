@@ -1765,19 +1765,35 @@ footer::before {
         height: 300px;
     }
 
+    .marquee-wrapper {
+        max-width: 90vw;
+        margin: 0 auto;
+        height: 300px;
+    }
+
+    .marquee-content {
+        height: 100%;
+    }
+
     .gallery-wrapper {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        min-height: auto;
+        padding: 20px 0;
     }
 
     /* モバイルでのドット位置調整 */
     .gallery-dots {
         position: relative;
         bottom: auto;
-        margin-top: 15px;
-        margin-bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
     }
 
     /* フローティング予約ボタン（モバイル） */
