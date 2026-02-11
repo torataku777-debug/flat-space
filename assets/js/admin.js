@@ -277,7 +277,7 @@ async function renderGames() {
             <div>タイトル</div>
             <div>キャッチコピー</div>
             <div>タグ</div>
-            <div>ピックアップ (${featuredCount}/8)</div>
+            <div>ピックアップ (${featuredCount}個)</div>
             <div>操作</div>
         </div>
         ${data.map(game => `
@@ -292,8 +292,7 @@ async function renderGames() {
                 </div>
                 <div>
                     <label class="checkbox-label">
-                        <input type="checkbox" class="game-featured-checkbox" data-game-id="${game.id}" ${game.featured ? 'checked' : ''} 
-                               ${!game.featured && featuredCount >= 8 ? 'disabled' : ''}>
+                        <input type="checkbox" class="game-featured-checkbox" data-game-id="${game.id}" ${game.featured ? 'checked' : ''}>
                     </label>
                 </div>
                 <div class="game-actions">
@@ -405,13 +404,6 @@ async function deleteGame(id) {
 
 async function toggleFeatured(id, checked) {
     const data = await getGamesData();
-    const featuredCount = data.filter(g => g.featured).length;
-
-    if (checked && featuredCount >= 8) {
-        alert('ピックアップは最大8個までです');
-        await renderGames();
-        return;
-    }
 
     const game = data.find(g => g.id === id);
     if (game) {
