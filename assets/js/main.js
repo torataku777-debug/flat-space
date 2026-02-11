@@ -116,10 +116,11 @@ const init = async () => {
         });
     });
 
-    // --- Dynamic Gallery from LocalStorage or Supabase ---
+    // --- Dynamic Gallery from LocalStorage or Supabase (Slideshow) ---
     async function loadGallery() {
         const galleryContent = document.querySelector('.marquee-content');
-        if (!galleryContent) return;
+        const marqueeWrapper = document.querySelector('.marquee-wrapper');
+        if (!galleryContent || !marqueeWrapper) return;
 
         let images = null;
 
@@ -140,14 +141,64 @@ const init = async () => {
             console.warn('ギャラリーデータが取得できませんでした。デフォルト画像を表示します。');
         }
 
-        // Triple the array for seamless infinite loop
-        const tripled = [...images, ...images, ...images];
-
-        galleryContent.innerHTML = tripled.map((img, index) => `
-            <div class="gallery-item">
-                <img src="${img}" alt="Interior View ${(index % images.length) + 1}">
+        // Create gallery items
+        galleryContent.innerHTML = images.map((img, index) => `
+            <div class="gallery-item ${index === 0 ? 'active' : ''}">
+                <img src="${img}" alt="Interior View ${index + 1}" loading="lazy">
             </div>
         `).join('');
+
+        // Create navigation dots
+        const dotsHTML = `
+            <div class="gallery-dots">
+                ${images.map((_, index) => `
+                    <div class="gallery-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></div>
+                `).join('')}
+            </div>
+        `;
+        marqueeWrapper.insertAdjacentHTML('beforeend', dotsHTML);
+
+        // Slideshow logic
+        let currentIndex = 0;
+        const galleryItems = galleryContent.querySelectorAll('.gallery-item');
+        const dots = marqueeWrapper.querySelectorAll('.gallery-dot');
+
+        function showSlide(index) {
+            // Remove active class from all
+            galleryItems.forEach(item => item.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            // Add active class to current
+            galleryItems[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentIndex = index;
+        }
+
+        function nextSlide() {
+            const nextIndex = (currentIndex + 1) % images.length;
+            showSlide(nextIndex);
+        }
+
+        // Auto-advance every 5 seconds
+        let slideInterval = setInterval(nextSlide, 5000);
+
+        // Dot click handlers
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                clearInterval(slideInterval);
+                showSlide(index);
+                slideInterval = setInterval(nextSlide, 5000);
+            });
+        });
+
+        // Pause on hover
+        marqueeWrapper.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+
+        marqueeWrapper.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(nextSlide, 5000);
+        });
     }
 
     loadGallery();
@@ -402,16 +453,23 @@ const init = async () => {
         });
     }
 
-    // Header Scroll Logic
+    // Header Scroll Logic (Throttled for performance)
     const header = document.getElementById('header');
     if (header) {
+        let ticking = false;
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    if (window.scrollY > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                    ticking = false;
+                });
+                ticking = true;
             }
-        });
+        }, { passive: true });
     }
 
     // --- Intersection Observer for Scroll Animation ---
@@ -654,12 +712,7 @@ const init = async () => {
         }, 100);
     }
 
-    // Apply to gallery
-    const galleryWrapper = document.querySelector('.marquee-wrapper');
-    const galleryContent = document.querySelector('.marquee-content');
-    addTouchScroll(galleryWrapper, galleryContent);
-
-    // Apply to games
+    // Apply to games only (gallery is now slideshow)
     const gameWrapper = document.querySelector('.game-marquee-wrapper');
     const gameContent = document.querySelector('.game-marquee-content');
     addTouchScroll(gameWrapper, gameContent);
@@ -709,24 +762,33 @@ if (document.readyState === 'loading') {
     init();
 }
 
-// --- Scroll-linked Geometric Shapes Animation ---
+// --- Scroll-linked Geometric Shapes Animation (Throttled for performance) ---
 // スクロール連動の幾何学図形アニメーション
+let shapeTicking = false;
 window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollProgress = Math.min(scrollY / maxScroll, 1);
+    if (!shapeTicking) {
+        window.requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollProgress = Math.min(scrollY / maxScroll, 1);
 
-    // body::before（円形）の動き
-    const circleRotate = scrollProgress * 360; // 1回転
-    const circleScale = 1 + scrollProgress * 0.3; // 最大1.3倍
+            // body::before（円形）の動き
+            const circleRotate = scrollProgress * 360; // 1回転
+            const circleScale = 1 + scrollProgress * 0.3; // 最大1.3倍
 
-    // body::after（三角形）の動き
-    const triangleRotate = -scrollProgress * 180; // 半回転（逆方向）
-    const triangleTranslate = scrollProgress * 50; // 50px移動
+            // body::after（三角形）の動き
+            const triangleRotate = -scrollProgress * 180; // 半回転（逆方向）
+            const triangleTranslate = scrollProgress * 50; // 50px移動
 
-    // CSSカスタムプロパティとして設定
-    document.documentElement.style.setProperty('--scroll-circle-rotate', circleRotate + 'deg');
-    document.documentElement.style.setProperty('--scroll-circle-scale', circleScale);
-    document.documentElement.style.setProperty('--scroll-triangle-rotate', triangleRotate + 'deg');
-    document.documentElement.style.setProperty('--scroll-triangle-translate', triangleTranslate + 'px');
-});
+            // CSSカスタムプロパティとして設定
+            document.documentElement.style.setProperty('--scroll-circle-rotate', circleRotate + 'deg');
+            document.documentElement.style.setProperty('--scroll-circle-scale', circleScale);
+            document.documentElement.style.setProperty('--scroll-triangle-rotate', triangleRotate + 'deg');
+            document.documentElement.style.setProperty('--scroll-triangle-translate', triangleTranslate + 'px');
+
+            shapeTicking = false;
+        });
+        shapeTicking = true;
+    }
+}, { passive: true });
+

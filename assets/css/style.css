@@ -627,46 +627,55 @@ header.scrolled {
     }
 }
 
-/* Gallery (Marquee) */
+/* Gallery (Slideshow with Fade) */
 .gallery-wrapper {
     width: 100%;
     overflow: hidden;
     padding: 40px 0;
+    position: relative;
+    min-height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .marquee-wrapper {
     width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+    max-width: 600px;
+    position: relative;
+    height: 400px;
+    margin: 0 auto;
 }
 
 .marquee-content {
-    display: inline-flex;
-    animation: scroll-left 30s linear infinite;
-    will-change: transform;
-    transform: translateZ(0);
-    backface-visibility: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .gallery-item {
-    width: 500px;
-    height: 350px;
-    margin-right: 30px;
-    /* 間隔を広げる */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;
     border-radius: 16px;
     overflow: visible;
-    /* フレーム装飾を表示 */
     cursor: pointer;
     background: #fff;
-    flex-shrink: 0;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
     padding: 12px;
     box-shadow:
         0 8px 16px rgba(47, 82, 51, 0.12),
         inset 0 0 0 3px rgba(123, 168, 133, 0.3);
+    opacity: 0;
+    transition: opacity 1s ease-in-out, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+}
+
+.gallery-item.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
 }
 
 .gallery-item::before {
@@ -704,26 +713,38 @@ header.scrolled {
     transform: scale(1.08);
 }
 
-/* Pause on hover */
-.marquee-content:hover {
-    animation-play-state: paused;
+/* Gallery navigation dots */
+.gallery-dots {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.gallery-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(123, 168, 133, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gallery-dot.active {
+    background: var(--primary-color);
+    transform: scale(1.2);
+}
+
+.gallery-dot:hover {
+    background: var(--accent-color);
 }
 
 /* Hide scrollbars for touch scroll */
-.marquee-wrapper::-webkit-scrollbar,
 .game-marquee-wrapper::-webkit-scrollbar {
     display: none;
-}
-
-@keyframes scroll-left {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-33.333%);
-        /* Move one third of the width (since we tripled) */
-    }
 }
 
 /* Hide original masonry media queries as they are no longer needed */

@@ -17,12 +17,13 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap"
         rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        media="print" onload="this.media='all'">
 
     <link rel="stylesheet" href="assets/css/style.css">
 
     <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 
 </head>
 
@@ -30,7 +31,7 @@
 
     <!-- Opening Video Overlay -->
     <div id="opening-overlay">
-        <video id="opening-video" muted playsinline autoplay>
+        <video id="opening-video" muted playsinline autoplay preload="metadata">
             <source src="assets/video/opening.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -93,39 +94,7 @@
                 <div class="gallery-wrapper">
                     <div class="marquee-wrapper">
                         <div class="marquee-content">
-                            <!-- Set 1 -->
-                            <div class="gallery-item"><img src="assets/images/gallery_01.jpg" alt="Interior View 1">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_02.jpg" alt="Interior View 2">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_03.jpg" alt="Interior View 3">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_04.jpg" alt="Interior View 4">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_05.jpg" alt="Interior View 5">
-                            </div>
-                            <!-- Set 2 -->
-                            <div class="gallery-item"><img src="assets/images/gallery_01.jpg" alt="Interior View 1">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_02.jpg" alt="Interior View 2">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_03.jpg" alt="Interior View 3">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_04.jpg" alt="Interior View 4">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_05.jpg" alt="Interior View 5">
-                            </div>
-                            <!-- Set 3 (Triple for Loop) -->
-                            <div class="gallery-item"><img src="assets/images/gallery_01.jpg" alt="Interior View 1">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_02.jpg" alt="Interior View 2">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_03.jpg" alt="Interior View 3">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_04.jpg" alt="Interior View 4">
-                            </div>
-                            <div class="gallery-item"><img src="assets/images/gallery_05.jpg" alt="Interior View 5">
-                            </div>
+                            <!-- Gallery items will be dynamically inserted by JavaScript -->
                         </div>
                     </div>
                 </div>
@@ -135,11 +104,11 @@
 
         <!-- Price Section -->
         <section id="price" class="section">
-            <img src="assets/images/vine_left.svg" alt="" class="vine-decoration vine-left">
-            <img src="assets/images/vine_right.svg" alt="" class="vine-decoration vine-right">
+            <img src="assets/images/vine_left.svg" loading="lazy" alt="" class="vine-decoration vine-left">
+            <img src="assets/images/vine_right.svg" loading="lazy" alt="" class="vine-decoration vine-right">
             <div class="container">
                 <h2 class="section-title">PRICE<span class="jp-title">料金プラン</span></h2>
-                <p class="section-desc">別途、入場料 500円 がかかります。<br>（貸切プランを除く）</p>
+                <p class="section-desc">別途、入場料 500円 がかかります。<br>（店舗貸切プランを除く）</p>
                 <div class="cards-grid">
                     <!-- Board Game Plan -->
                     <div class="card price-card glass-card featured" data-plan="boardgame" data-rate="80">
@@ -163,7 +132,7 @@
                     <!-- Charter Plan -->
                     <div class="card price-card glass-card">
                         <div class="card-icon"><i class="fa-solid fa-chess-rook"></i></div>
-                        <h3>貸切<br>プラン</h3>
+                        <h3>店舗貸切<br>プラン</h3>
                         <div class="price">
                             <span class="amount">19,800</span><span class="unit">円 / 1時間</span>
                         </div>
@@ -175,7 +144,7 @@
 
         <!-- News Section -->
         <section id="news" class="section">
-            <img src="assets/images/vine_accent.svg" alt="" class="vine-decoration vine-accent">
+            <img src="assets/images/vine_accent.svg" loading="lazy" alt="" class="vine-decoration vine-accent">
             <div class="container">
                 <h2 class="section-title">NEWS<span class="jp-title">お知らせ</span></h2>
                 <div id="news-list" class="news-list"></div>
@@ -196,127 +165,151 @@
                     <div class="game-marquee-content">
                         <!-- Set 1 -->
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#初心者歓迎</span><span>#60分〜</span></div>
                             <div class="game-title-overlay">Catan</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion">
+                            <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion"
+                                    loading="lazy">
                             </div>
                             <div class="game-tags"><span>#戦略</span><span>#30分〜</span></div>
                             <div class="game-title-overlay">Dominion</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#パズル</span><span>#20分〜</span></div>
                             <div class="game-title-overlay">Blokus</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
                             <div class="game-title-overlay">Geister</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#盛り上がる</span><span>#20分〜</span></div>
                             <div class="game-title-overlay">Ito</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#買い物</span><span>#30分〜</span></div>
                             <div class="game-title-overlay">Splendor</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#想像力</span><span>#30分〜</span></div>
                             <div class="game-title-overlay">Dixit</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
                             <div class="game-title-overlay">Skull</div>
                         </div>
                         <!-- Set 2 (Duplicate for seamless loop) -->
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#初心者歓迎</span><span>#60分〜</span></div>
                             <div class="game-title-overlay">Catan</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion">
+                            <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion"
+                                    loading="lazy">
                             </div>
                             <div class="game-tags"><span>#戦略</span><span>#30分〜</span></div>
                             <div class="game-title-overlay">Dominion</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#パズル</span><span>#20分〜</span></div>
                             <div class="game-title-overlay">Blokus</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
                             <div class="game-title-overlay">Geister</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#盛り上がる</span><span>#20分〜</span></div>
                             <div class="game-title-overlay">Ito</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#買い物</span><span>#30分〜</span></div>
                             <div class="game-title-overlay">Splendor</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#想像力</span><span>#30分〜</span></div>
                             <div class="game-title-overlay">Dixit</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
                             <div class="game-title-overlay">Skull</div>
                         </div>
                         <!-- Set 3 (Triple for Loop) -->
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_catan.jpg" alt="Catan"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#初心者歓迎</span><span>#60分〜</span></div>
                             <div class="game-title-overlay">Catan</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion">
+                            <div class="game-img-wrapper"><img src="assets/images/game_dominion.jpg" alt="Dominion"
+                                    loading="lazy">
                             </div>
                             <div class="game-tags"><span>#戦略</span><span>#30分〜</span></div>
                             <div class="game-title-overlay">Dominion</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_blokus.jpg" alt="Blokus"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#パズル</span><span>#20分〜</span></div>
                             <div class="game-title-overlay">Blokus</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_geister.jpg" alt="Geister"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
                             <div class="game-title-overlay">Geister</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Ito"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#盛り上がる</span><span>#20分〜</span></div>
                             <div class="game-title-overlay">Ito</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Splendor"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#買い物</span><span>#30分〜</span></div>
                             <div class="game-title-overlay">Splendor</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Dixit"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#想像力</span><span>#30分〜</span></div>
                             <div class="game-title-overlay">Dixit</div>
                         </div>
                         <div class="game-item">
-                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"></div>
+                            <div class="game-img-wrapper"><img src="assets/images/game_sample.png" alt="Skull"
+                                    loading="lazy"></div>
                             <div class="game-tags"><span>#心理戦</span><span>#15分〜</span></div>
                             <div class="game-title-overlay">Skull</div>
                         </div>
@@ -331,7 +324,7 @@
 
         <!-- Access Section -->
         <section id="access" class="section">
-            <img src="assets/images/vine_left.svg" alt="" class="vine-decoration vine-left">
+            <img src="assets/images/vine_left.svg" loading="lazy" alt="" class="vine-decoration vine-left">
             <div class="container">
                 <h2 class="section-title">ACCESS<span class="jp-title">アクセス</span></h2>
                 <div class="access-content">
