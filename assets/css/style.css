@@ -826,35 +826,63 @@ header.scrolled {
     background: var(--accent-color);
 }
 
-/* 予約ボタン */
-.gallery-reserve-btn-wrapper {
-    text-align: center;
-    margin-top: 50px;
-}
-
-.reserve-btn {
-    display: inline-flex;
+/* フローティング予約ボタン */
+.floating-reserve-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
     align-items: center;
     gap: 10px;
-    padding: 18px 40px;
+    padding: 16px 28px;
     background: linear-gradient(135deg, #06C755 0%, #00B14F 100%);
     color: white;
     text-decoration: none;
     border-radius: 50px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
-    box-shadow: 0 4px 15px rgba(6, 199, 85, 0.3);
-    transition: all 0.3s ease;
-}
-
-.reserve-btn:hover {
-    background: linear-gradient(135deg, #00B14F 0%, #06C755 100%);
-    transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(6, 199, 85, 0.4);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
+
+    /* パルスアニメーション */
+    animation: pulse 2s ease-in-out infinite;
 }
 
-.reserve-btn i {
+.floating-reserve-btn.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.floating-reserve-btn:hover {
+    background: linear-gradient(135deg, #00B14F 0%, #06C755 100%);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(6, 199, 85, 0.5);
+}
+
+.floating-reserve-btn i {
     font-size: 24px;
+}
+
+.floating-reserve-btn span {
+    font-weight: 700;
+}
+
+/* パルスアニメーション */
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 6px 20px rgba(6, 199, 85, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 6px 30px rgba(6, 199, 85, 0.7), 0 0 0 10px rgba(6, 199, 85, 0.1);
+    }
 }
 
 /* Hide scrollbars for touch scroll */
@@ -1752,18 +1780,16 @@ footer::before {
         margin-bottom: 30px;
     }
 
-    /* モバイルでの予約ボタン */
-    .gallery-reserve-btn-wrapper {
-        margin-top: 20px;
-        width: 100%;
-        padding: 0 20px;
+    /* フローティング予約ボタン（モバイル） */
+    .floating-reserve-btn {
+        bottom: 20px;
+        right: 20px;
+        padding: 14px 24px;
+        font-size: 14px;
     }
 
-    .reserve-btn {
-        width: 100%;
-        justify-content: center;
-        font-size: 16px;
-        padding: 16px 30px;
+    .floating-reserve-btn i {
+        font-size: 20px;
     }
 
     .hero-bg-single {

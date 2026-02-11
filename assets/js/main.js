@@ -781,3 +781,21 @@ window.addEventListener('scroll', () => {
     }
 }, { passive: true });
 
+// フローティング予約ボタンのスクロール制御
+const floatingReserveBtn = document.getElementById('floatingReserveBtn');
+const gallerySection = document.getElementById('gallery');
+
+if (floatingReserveBtn && gallerySection) {
+    window.addEventListener('scroll', () => {
+        const galleryTop = gallerySection.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+
+        // ギャラリーセクションが画面に入ったらボタンを表示
+        if (galleryTop < windowHeight) {
+            floatingReserveBtn.classList.add('show');
+        } else {
+            floatingReserveBtn.classList.remove('show');
+        }
+    }, { passive: true });
+}
+
